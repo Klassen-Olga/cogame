@@ -3,6 +3,7 @@ package de.cogame.userservice.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Address;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -19,6 +20,7 @@ public class User {
     private String id;
     private LocalDate dateOdBirth;
     private Sex sex;
+    private PlaceOfLiving placeOfLiving;
     private Occupation occupation;
     private String phoneNumber;
 

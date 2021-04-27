@@ -20,53 +20,7 @@ public class UserController {
 
     @GetMapping("/")
     public String greeting(){
-        go();
         return "Hello from user service!";
     }
 
-    @GetMapping("/insert-user")
-    public User insertUser(){
-
-        return go();
-    }
-    @Autowired
-    UserRepository userRepository;
-
-    public User go(){
-
-        List<String> books=new LinkedList<>();
-
-        books.add("book1");
-        books.add("book2");
-        books.add("book3");
-
-        List<String> movies=new LinkedList<>();
-
-        movies.add("movie1");
-        movies.add("movie2");
-        movies.add("movie3");
-
-        List<String> games=new LinkedList<>();
-
-        games.add("game1");
-        games.add("game2");
-
-
-        List<String> music=new LinkedList<>();
-
-        music.add("music1");
-        music.add("music2");
-        music.add("music3");
-
-        User user=new User("", LocalDate.of(1996, 4, 5), Sex.FEMALE,
-                new Occupation(" ", " "), "19083209",
-                books, movies,games, music, new Account("mail@mail.com", "12345678"));
-
-
-        user.setId(null);
-        this.userRepository.deleteAll();
-        User user1= this.userRepository.save(user);
-        log.info(user1.getPhoneNumber());
-        return user1;
-    }
 }
