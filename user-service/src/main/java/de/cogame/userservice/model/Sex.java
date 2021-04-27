@@ -1,6 +1,6 @@
 package de.cogame.userservice.model;
 
-enum Sex {
+public enum Sex {
     MALE,
     FEMALE,
     OTHER

@@ -1,38 +1,31 @@
-package de.cogame.userservice.web;
+package de.cogame.userservice.initializr;
 
 import de.cogame.userservice.model.Account;
 import de.cogame.userservice.model.Occupation;
 import de.cogame.userservice.model.Sex;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-@RestController
+@Component
+@RequiredArgsConstructor
 @Log4j2
-public class UserController {
+public class Initializr{
 
-    @GetMapping("/")
-    public String greeting(){
-        go();
-        return "Hello from user service!";
-    }
-
-    @GetMapping("/insert-user")
-    public User insertUser(){
-
-        return go();
-    }
     @Autowired
     UserRepository userRepository;
 
-    public User go(){
+    @EventListener(ApplicationReadyEvent.class)
+    public void go(){
 
         List<String> books=new LinkedList<>();
 
@@ -62,11 +55,9 @@ public class UserController {
                 new Occupation(" ", " "), "19083209",
                 books, movies,games, music, new Account("mail@mail.com", "12345678"));
 
-
-        user.setId(null);
-        this.userRepository.deleteAll();
-        User user1= this.userRepository.save(user);
-        log.info(user1.getPhoneNumber());
-        return user1;
+        userRepository.deleteAll();
+        this.userRepository.save(user);
+        this.userRepository.save(user);
     }
+
 }

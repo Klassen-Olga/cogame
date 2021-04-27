@@ -16,7 +16,7 @@ import java.util.List;
 public class User {
 
     @Id
-    private Long id;
+    private String id;
     private LocalDate dateOdBirth;
     private Sex sex;
     private Occupation occupation;
