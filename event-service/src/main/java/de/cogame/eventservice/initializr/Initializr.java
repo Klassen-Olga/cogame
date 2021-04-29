@@ -42,7 +42,7 @@ public class Initializr {
         Event event=new Event("", "Friends evening", "A party where we are going to play both monopoly and twister",
                 LocalDateTime.of(LocalDate.of(2021, 8, 15), LocalTime.of(12, 00)),
                 new Address("Norweische Street 15", "Erfurt", "Germany"),
-                activities, "608873cd2e22d5088f7cdb5d", participants, 4, tools);
+                activities, "608873cd2e22d5088f7cdb5d", participants, 4, tools, LocalDateTime.now());
 
         eventRepository.deleteAll();
         eventRepository.save(event);

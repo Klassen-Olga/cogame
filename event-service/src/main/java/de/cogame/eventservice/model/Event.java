@@ -29,6 +29,6 @@ public class Event {
     private int participantsNumber;
 
     private List<Tool> tools;
-
+    private LocalDateTime createdAt=LocalDateTime.now();
 
 }
