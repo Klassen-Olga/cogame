@@ -1,7 +1,7 @@
 package de.cogame.userservice.web;
 
 import de.cogame.globalhandler.GlobalHandlerApplication;
-import de.cogame.globalhandler.exception.UserNotFoundException;
+import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -37,7 +37,7 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
 
         if (!user.isPresent()){
-            throw new UserNotFoundException("User with id "+id+" does not exist");
+            throw new NotFoundException("User with id "+id+" does not exist");
         }
 
         return user.get();
