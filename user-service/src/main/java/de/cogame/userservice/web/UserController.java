@@ -6,10 +6,11 @@ import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +42,34 @@ public class UserController {
         }
 
         return user.get();
+
+    }
+    @PostMapping("/users")
+    public ResponseEntity<Object> createUser(@RequestBody User user) {
+
+        User savedUser=userRepository.save(user);
+        URI location= ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedUser.getId())
+                .toUri();
+
+        System.out.println(location);
+        return ResponseEntity.created(location).build();
+
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable String id) {
+
+        userRepository.deleteById(id);
+
+    }
+
+    @PutMapping("/users/{id}")
+    public void updateUser(@RequestBody User user) {
+
+        userRepository.save(user);
 
     }
 
