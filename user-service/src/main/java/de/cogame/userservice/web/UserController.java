@@ -6,7 +6,9 @@ import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,7 +23,7 @@ import java.util.Optional;
 public class UserController {
 
     UserRepository userRepository;
-
+    PasswordEncoder passwordEncoder;
     @GetMapping("/")
     public String greeting() {
         return GlobalHandlerApplication.hello();
@@ -48,6 +50,7 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
 
+        user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
         User savedUser=userRepository.save(user);
         URI location= ServletUriComponentsBuilder
                 .fromCurrentRequest()
