@@ -8,16 +8,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document
 public class Account {
 
-    //@Email
+    @Email
+    @NotBlank
     private String email;
-    //@Min(value = 6, message = "Password should be longer than 5 characters")
+    @Size(min = 6, message = "Password should be longer than 5 characters")
     private String password;
 
 

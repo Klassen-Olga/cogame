@@ -55,7 +55,6 @@ public class UserController {
                 .buildAndExpand(savedUser.getId())
                 .toUri();
 
-        System.out.println(location);
         return ResponseEntity.created(location).build();
 
     }
