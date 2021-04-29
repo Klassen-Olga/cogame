@@ -18,6 +18,7 @@ public class User {
 
     @Id
     private String id;
+    private String name;
     private LocalDate dateOdBirth;
     private Sex sex;
     private PlaceOfLiving placeOfLiving;
