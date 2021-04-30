@@ -21,5 +21,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build with Maven
+      - name: Build event-service
         run: mvn -B package --file event-service/pom.xml
+      - name: Build user-service
+        run: mvn -B package --file user-service/pom.xml
