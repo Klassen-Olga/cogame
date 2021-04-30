@@ -39,7 +39,7 @@ public class UserController {
     public User getUser(@PathVariable String id) {
 
         Optional<User> user = userRepository.findById(id);
-
+        
         if (!user.isPresent()){
             throw new NotFoundException("User with id "+id+" does not exist");
         }
@@ -49,7 +49,6 @@ public class UserController {
     }
     @PostMapping("/users")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-
         user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
         User savedUser=userRepository.save(user);
         URI location= ServletUriComponentsBuilder
