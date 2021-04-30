@@ -21,6 +21,8 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+      - name: Build global-handler
+        run: mvn -B package --file global-handler/pom.xml
       - name: Build event-service
         run: mvn -B package --file event-service/pom.xml
       - name: Build user-service
