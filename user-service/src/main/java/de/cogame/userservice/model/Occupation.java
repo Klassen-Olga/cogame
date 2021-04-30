@@ -1,12 +1,10 @@
 package de.cogame.userservice.model;
 
-import de.cogame.userservice.repository.UserRepository;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
