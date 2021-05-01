@@ -34,6 +34,7 @@ public class Initializr {
                 "Name3",
                 "1",
                 "A great place" , LocalDateTime.now());
+        messageRepository.deleteAll();
         messageRepository.save(message);
         messageRepository.save(message2);
         messageRepository.save(message3);

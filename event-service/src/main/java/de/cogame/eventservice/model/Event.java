@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,18 +19,26 @@ import java.util.List;
 public class Event {
     @Id
     private String id;
+    @Size(min = 3, message = "Name should have at least 3 characters ")
     private String name;
     private String description;
 
+    @Future
     private LocalDateTime dateTimeOfEvent;
+    @Valid
     private Address placeAddress;
-    private List<Activity> activities;
-
+    @NotNull
+    @Size(min = 1, message="At least 1 activity required")
+    private List<@Valid Activity> activities;
+    @NotEmpty
     private String creatorUserId;
     private List<String> participantsId;
+    private List<String> messagesId;
+    //includes the creator
+    @Min(value = 2, message = "Participants number of any event should be more than 1 person")
     private int participantsNumber;
 
     private List<Tool> tools;
-    private LocalDateTime createdAt=LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
