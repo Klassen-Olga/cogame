@@ -23,7 +23,5 @@ jobs:
           distribution: 'adopt'
       - name: Build global-handler
         run: mvn -B package --file global-handler/pom.xml
-      - name: Build event-service
-        run: mvn -B package --file event-service/pom.xml
-      - name: Build user-service
-        run: mvn -B package --file user-service/pom.xml
+      - name: Build services
+        run: mvn -B package --file pom.xml

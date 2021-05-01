@@ -1,18 +1,16 @@
 package de.cogame.userservice.web;
 
-import de.cogame.globalhandler.GlobalHandlerApplication;
-import de.cogame.globalhandler.exception.NotFoundException;
+
+import com.example.multimodule.service.exception.NotFoundException;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -23,11 +21,11 @@ import java.util.Optional;
 public class UserController {
 
     UserRepository userRepository;
-    PasswordEncoder passwordEncoder;
-    @GetMapping("/")
+  ///  PasswordEncoder passwordEncoder;
+    /*@GetMapping("/")
     public String greeting() {
         return GlobalHandlerApplication.hello();
-    }
+    }*/
 
     @GetMapping("/users")
     public List<User> getUsers() {
@@ -48,8 +46,8 @@ public class UserController {
 
     }
     @PostMapping("/users")
-    public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
+    public ResponseEntity<Object> createUser(/*@Valid*/ @RequestBody User user) {
+      //  user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
         User savedUser=userRepository.save(user);
         URI location= ServletUriComponentsBuilder
                 .fromCurrentRequest()

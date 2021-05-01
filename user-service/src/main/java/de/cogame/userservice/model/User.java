@@ -8,8 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,16 +19,16 @@ public class User {
 
     @Id
     private String id;
-    @Size(min=2, message="Name should have at least 2 characters")
+  //  @Size(min=2, message="Name should have at least 2 characters")
     private String name;
-    @Past
+  //  @Past
     private LocalDate dateOdBirth;
     private Sex sex;
-    @Valid
+   // @Valid
     private PlaceOfLiving placeOfLiving;
-    @Valid
+  //  @Valid
     private Occupation occupation;
-    @Size(min=4, message="Enter a valid phone number")
+  //  @Size(min=4, message="Enter a valid phone number")
     private String phoneNumber;
 
 
@@ -38,7 +36,7 @@ public class User {
     private List<String> favouriteMovies;
     private List<String> favouriteGames;
     private List<String> favouriteMusic;
-    @Valid
+    //@Valid
     private Account account;
 
 }

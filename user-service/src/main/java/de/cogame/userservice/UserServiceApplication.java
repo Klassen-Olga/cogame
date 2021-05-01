@@ -1,7 +1,9 @@
 package de.cogame.userservice;
 
-import de.cogame.globalhandler.exception.CustomExceptionHandler;
-import de.cogame.globalhandler.security.SecurityConfiguration;
+
+
+import com.example.multimodule.service.exception.CustomExceptionHandler;
+import com.example.multimodule.service.security.SecurityConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
