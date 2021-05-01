@@ -8,4 +8,5 @@ import java.util.List;
 public interface MessageRepository extends MongoRepository<Message, String> {
     List<Message> findByEventId(String eventId);
 
+    void deleteMessagesById(String id);
 }

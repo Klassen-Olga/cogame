@@ -38,13 +38,6 @@ public class EventController {
         return getEventOrThrowNotFoundException(id);
     }
 
-    /*@GetMapping("/events/{id}/users")
-    public List<String> getUsersOfEvent(@PathVariable String id){
-        Event event=getEventOrThrowNotFoundException(id);
-
-        return event.getParticipantsId();
-    }*/
-
     @GetMapping("/events/{id}/messages")
     public List<Message> getMessagesOfEvent(@PathVariable String id){
 

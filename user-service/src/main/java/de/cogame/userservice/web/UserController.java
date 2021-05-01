@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,18 @@ public class UserController {
     public List<User> getUsers() {
 
         return userRepository.findAll();
+    }
+    /*@GetMapping("/users1")
+    public List<User> getUsers1() {
+        List<String> ids=new LinkedList<>();
+        ids.add("1");
+        ids.add("5");
+        return userRepository.getAllByIdIn(ids);
+    }*/
+    @GetMapping("/certain-users")
+    public List<User> getCertainUsers(@RequestBody List<String> ids) {
+
+        return userRepository.getAllByIdIn(ids);
     }
 
     @GetMapping("/users/{id}")
