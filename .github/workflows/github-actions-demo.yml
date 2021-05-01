@@ -21,7 +21,5 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-      - name: Build global-handler
-        run: mvn -B package --file global-handler/pom.xml
       - name: Build services
         run: mvn -B package --file pom.xml
