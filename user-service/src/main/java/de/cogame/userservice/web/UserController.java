@@ -67,6 +67,10 @@ public class UserController {
     @PutMapping("/users/{id}")
     public void updateUser(@RequestBody User user) {
 
+        if (userRepository.findById(user.getId()).isEmpty()){
+            throw new NotFoundException("User with id "+user.getId()+" does not exist");
+        }
+
         userRepository.save(user);
 
     }

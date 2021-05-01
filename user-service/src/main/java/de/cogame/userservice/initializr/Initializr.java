@@ -48,7 +48,7 @@ public class Initializr {
         music.add("music2");
         music.add("music3");
 
-        User user = new User("","Albert", LocalDate.of(1996, 4, 5), Sex.FEMALE,
+        User user = new User("","Albert", LocalDate.of(1996, 4, 5), "FEMALE",
                 new PlaceOfLiving("Berlin", "Germany"),
                 new Occupation(" ", " "), "19083209",
                 books, movies, games, music, new Account("mail@mail.com", "12345678"));

@@ -1,5 +1,6 @@
 package de.cogame.userservice.model;
 
+import de.cogame.globalhandler.validation.EnumValidation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +27,8 @@ public class User {
     private String name;
     @Past
     private LocalDate dateOdBirth;
-    private Sex sex;
+    @EnumValidation(enumClass = Sex.class, message = "Allowed values: MALE, FEMALE, OTHER")
+    private String sex;
     @Valid
     private PlaceOfLiving placeOfLiving;
     @Valid
