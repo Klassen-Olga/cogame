@@ -10,9 +10,9 @@
 
     <modules>
         <module>library</module>
+        <module>user-service</module>
         <module>event-service</module>
         <module>message-service</module>
-        <module>user-service</module>
     </modules>
 
 </project>
