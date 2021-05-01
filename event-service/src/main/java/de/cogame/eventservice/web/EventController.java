@@ -2,9 +2,10 @@ package de.cogame.eventservice.web;
 
 import de.cogame.eventservice.model.Event;
 import de.cogame.eventservice.repository.EventRepository;
+import de.cogame.eventservice.web.messageproxy.Message;
+import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
 import de.cogame.globalhandler.exception.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class EventController {
 
     EventRepository eventRepository;
+    MessageServiceProxy messageServiceProxy;
 
     @GetMapping("/")
     public String greeting(){
@@ -36,18 +38,20 @@ public class EventController {
         return getEventOrThrowNotFoundException(id);
     }
 
-    @GetMapping("/events/{id}/users")
+    /*@GetMapping("/events/{id}/users")
     public List<String> getUsersOfEvent(@PathVariable String id){
         Event event=getEventOrThrowNotFoundException(id);
 
         return event.getParticipantsId();
-    }
-    @GetMapping("/events/{id}/messages")
-    public List<String> getMessagesOfEvent(@PathVariable String id){
-        Event event=getEventOrThrowNotFoundException(id);
+    }*/
 
-        return event.getMessagesId();
+    @GetMapping("/events/{id}/messages")
+    public List<Message> getMessagesOfEvent(@PathVariable String id){
+
+        getEventOrThrowNotFoundException(id);
+        return messageServiceProxy.getMessages(id);
     }
+
 
     @PostMapping("/events")
     public ResponseEntity<Object> createEvent(@Valid @RequestBody Event event){

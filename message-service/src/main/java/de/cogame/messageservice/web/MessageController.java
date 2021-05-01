@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,9 +21,12 @@ public class MessageController {
 
     MessageRepository messageRepository;
 
-    @GetMapping("/events/{id}/comments")
-    public List<Message> getComments(@PathVariable String id){
+    @GetMapping("/events/{id}/messages")
+    public List<Message> getMessages(@PathVariable String id){
+
+
 
         return messageRepository.findByEventId(id);
     }
+
 }
