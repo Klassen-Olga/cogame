@@ -66,6 +66,14 @@ public class EventController {
         eventRepository.delete(event);
     }
 
+    @PutMapping("/events")
+    public void changeEvent(@Valid @RequestBody Event event){
+
+        getEventOrThrowNotFoundException(event.getId());
+        eventRepository.save(event);
+
+    }
+
     public Event getEventOrThrowNotFoundException(String id){
         Optional<Event> event=eventRepository.findById(id);
         if (!event.isPresent()){
