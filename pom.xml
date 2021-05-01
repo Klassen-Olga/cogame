@@ -10,7 +10,8 @@
 
     <modules>
         <module>library</module>
-        <!--<module>global-handler</module>-->
+        <module>event-service</module>
+        <module>message-service</module>
         <module>user-service</module>
     </modules>
 
