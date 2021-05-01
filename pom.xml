@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>library</module>
+        <module>global-handler</module>
         <module>user-service</module>
         <module>event-service</module>
         <module>message-service</module>

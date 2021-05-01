@@ -1,7 +1,7 @@
 package de.cogame.userservice.web;
 
 
-import com.example.multimodule.service.exception.NotFoundException;
+import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -21,11 +21,7 @@ import java.util.Optional;
 public class UserController {
 
     UserRepository userRepository;
-  ///  PasswordEncoder passwordEncoder;
-    /*@GetMapping("/")
-    public String greeting() {
-        return GlobalHandlerApplication.hello();
-    }*/
+
 
     @GetMapping("/users")
     public List<User> getUsers() {
