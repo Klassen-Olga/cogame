@@ -52,8 +52,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getBindingResult().toString());
         return  new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);    }
 
-    private static final Pattern ENUM_MSG = Pattern.compile("ACTIVE");
 
+    @Override
+    protected ResponseEntity<Object> handleHttpMessageNotReadable
+            (HttpMessageNotReadableException ex,
+             HttpHeaders headers,
+             HttpStatus status,
+             WebRequest request){
+
+        ExceptionResponse exceptionResponse=new ExceptionResponse(LocalDate.now(), "Validation failed",
+               "Required request body is missing");
+        return  new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);    }
 
 
 }

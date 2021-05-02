@@ -70,6 +70,14 @@ public class EventController {
         eventRepository.save(event);
 
     }
+    @PutMapping("/events/{eventId}/user-id")
+    public void addUser(@Valid @RequestBody String userId, @PathVariable String eventId){
+
+        Event event= getEventOrThrowNotFoundException(eventId);
+        event.getParticipantsId().add(userId);
+        eventRepository.save(event);
+
+    }
 
     public Event getEventOrThrowNotFoundException(String id){
         Optional<Event> event=eventRepository.findById(id);

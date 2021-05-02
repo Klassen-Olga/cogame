@@ -35,9 +35,6 @@ public class Initializr {
         participants.add("608873cd2e22d5088f7cdb5d");
         participants.add("608873cd2e22d5088f7cdb5e");
 
-        List<String> messages=new LinkedList<>();
-        messages.add("1");
-        messages.add("2");
 
         List<Tool> tools=new LinkedList<>();
         tools.add(new Tool("Monopoly game", true));
@@ -46,7 +43,7 @@ public class Initializr {
         Event event=new Event("1", "Friends evening", "A party where we are going to play both monopoly and twister",
                 LocalDateTime.of(LocalDate.of(2021, 8, 15), LocalTime.of(12, 00)),
                 new Address("Norweische Street 15", "Erfurt", "Germany"),
-                activities, "608873cd2e22d5088f7cdb5d", participants,messages, 4, tools, LocalDateTime.now());
+                activities, "608873cd2e22d5088f7cdb5d", participants, 4, tools, LocalDateTime.now());
 
         eventRepository.deleteAll();
         eventRepository.save(event);

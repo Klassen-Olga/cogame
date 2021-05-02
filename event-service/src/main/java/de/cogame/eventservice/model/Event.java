@@ -32,8 +32,8 @@ public class Event {
     private List<@Valid Activity> activities;
     @NotEmpty
     private String creatorUserId;
-    private List<String> participantsId;
-    private List<String> messagesId;
+    private List<@NotBlank String> participantsId;
+
     //includes the creator
     @Min(value = 2, message = "Participants number of any event should be more than 1 person")
     private int participantsNumber;

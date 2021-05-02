@@ -31,13 +31,7 @@ public class UserController {
 
         return userRepository.findAll();
     }
-    /*@GetMapping("/users1")
-    public List<User> getUsers1() {
-        List<String> ids=new LinkedList<>();
-        ids.add("1");
-        ids.add("5");
-        return userRepository.getAllByIdIn(ids);
-    }*/
+
     @GetMapping("/certain-users")
     public List<User> getCertainUsers(@RequestBody List<String> ids) {
 
