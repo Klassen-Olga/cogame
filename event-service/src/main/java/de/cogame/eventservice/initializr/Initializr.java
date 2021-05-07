@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class Initializr {
@@ -31,9 +33,10 @@ public class Initializr {
         activities.add(new Activity("TABLE", "Monopoly"));
         activities.add(new Activity("ACTIVE", "Twister"));
 
-        List<String> participants=new LinkedList<>();
-        participants.add("608873cd2e22d5088f7cdb5d");
-        participants.add("608873cd2e22d5088f7cdb5e");
+        Map<String, String> participants=new HashMap<>();
+        participants.put("1", "Albert");
+        participants.put("2", "Cup");
+
 
 
         List<Tool> tools=new LinkedList<>();

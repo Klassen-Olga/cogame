@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +33,9 @@ public class Event {
     private List<@Valid Activity> activities;
     @NotEmpty
     private String creatorUserId;
-    private List<@NotBlank String> participantsId;
+    // redundancy to prevent calling the user-service
+    @Valid
+    private Map<@NotBlank String, @NotBlank String> participants;
 
     //includes the creator
     @Min(value = 2, message = "Participants number of any event should be more than 1 person")
