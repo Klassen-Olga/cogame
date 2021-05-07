@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class Account {
 
-    @Email
+    @Email(message = "Email should have form example@ex.com")
     @NotBlank
     private String email;
     @Size(min = 6, message = "Password should be longer than 5 characters")

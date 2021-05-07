@@ -2,6 +2,7 @@ package de.cogame.userservice.repository;
 
 import de.cogame.userservice.initializr.UserInitializr;
 import de.cogame.userservice.model.User;
+import de.cogame.userservice.web.UserController;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,20 +22,28 @@ public class UserRepositoryDataTests {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    UserController userController;
+
+
     @Before
     public void before() throws IOException {
 
         userRepository.deleteAll();
         this.userRepository.save(UserInitializr.getUser("1"));
+
+
     }
 
     @Test
     public void getAllUsersReturnsFalse() throws IOException {
 
-        List<User> users = userRepository.findAll();
-        assertThat(userRepository.findAll().isEmpty()).isEqualTo(false);
+        //List<User> users = userRepository.findAll();
+        //assertThat(userRepository.findAll().isEmpty()).isEqualTo(false);
 
-
+        User user=  UserInitializr.getUser("1");
+        user.setName("");
+        userController.createUser(user);
     }
 }
 

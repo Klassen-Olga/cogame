@@ -25,7 +25,7 @@ public class User {
     private String id;
     @Size(min=2, message="Name should have at least 2 characters")
     private String name;
-    @Past
+    @Past(message = "Date must be in the past")
     private LocalDate dateOdBirth;
     @EnumValidation(enumClass = Sex.class, message = "Allowed values: MALE, FEMALE, OTHER")
     private String sex;
