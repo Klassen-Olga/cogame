@@ -44,7 +44,7 @@ public class UserInitializr {
 
         return new User(id,"Albert", LocalDate.of(1996, 4, 5), "FEMALE",
                 new PlaceOfLiving("Berlin", "Germany"),
-                new Occupation(" ", " "), "19083209",
+                new Occupation("Student", "University of applied science"), "19083209",
                 books, movies, games, music, new Account("mail@mail.com", "12345678"));
 
     }

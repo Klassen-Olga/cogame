@@ -1,5 +1,6 @@
 package de.cogame.userservice.web;
 
+import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.userservice.initializr.UserInitializr;
 import de.cogame.userservice.model.User;
 import lombok.extern.log4j.Log4j2;
@@ -19,26 +20,27 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.ContentResultMatchers;
 import org.springframework.util.StreamUtils;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.InputStream;
-import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+ * Test class to mock UserController's methods
+ *  without any spring context
+ *
+ * */
 @Log4j2
-//no ApplicationContext will be loaded
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
 public class UserControllerTests {
@@ -60,8 +62,10 @@ public class UserControllerTests {
     @Test
     public void returnsHelloFromUserService() throws Exception {
 
+        // when
         given(this.userController.greeting1()).willReturn("Hello from user-service");
 
+        // then
         this.mvc.perform(get("/greeting"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -73,11 +77,13 @@ public class UserControllerTests {
     @Test
     public void getUsersShouldReturnUsers() throws Exception {
         User user = UserInitializr.getUser("1");
-
-        given(this.userController.getUsers()).willReturn(Collections.singletonList(user));
-
         String users = StreamUtils.copyToString(usersFile.getInputStream(), Charset.defaultCharset());
 
+        //when
+        given(this.userController.getUsers()).willReturn(Collections.singletonList(user));
+
+
+        //then
         this.mvc.perform(get("/users").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -86,13 +92,27 @@ public class UserControllerTests {
     }
 
     @Test
+    public void getNotExistingUserWillThrowNotFoundException() throws Exception {
+
+        // given
+        doThrow(NotFoundException.class).when(userController).getUser("ulala");
+
+        // then
+        this.mvc.perform(get("/users/ulala").accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+
+    }
+
+    @Test
     public void getUser1ShouldReturnUsers1() throws Exception {
         User user = UserInitializr.getUser("1");
-
-        given(this.userController.getUser("1")).willReturn(user);
-
         String users = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
 
+        // when
+        given(this.userController.getUser("1")).willReturn(user);
+
+        //then
         this.mvc.perform(get("/users/1").accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -101,7 +121,8 @@ public class UserControllerTests {
     }
 
     @Test
-    public void get2UsersWithId1And2() throws Exception {
+    public void getCertainUserShouldReturnUserWithId1() throws Exception {
+        String usersFromFile = StreamUtils.copyToString(usersFile.getInputStream(), Charset.defaultCharset());
         List<String> usersId = new ArrayList<>();
         usersId.add("1");
         usersId.add("2rfdsa");
@@ -109,59 +130,82 @@ public class UserControllerTests {
         List<User> users = new ArrayList<>();
         users.add(UserInitializr.getUser("1"));
 
-
+        // when
         given(this.userController.getCertainUsers(usersId)).willReturn(users);
-
-        String usersFromFile = StreamUtils.copyToString(usersFile.getInputStream(), Charset.defaultCharset());
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/certain-users")
                 .accept(MediaType.APPLICATION_JSON)
                 .content("[\"1\", \"2rfdsa\"]")
                 .contentType(MediaType.APPLICATION_JSON);
-
-
+        //then
         this.mvc.perform(request)
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(usersFromFile));
     }
-    // for void functions
-/*
-*
-* given(this.userController.createUser(UserInitializr.getUser("1"))).willAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) throws Throwable {
-                URI location= ServletUriComponentsBuilder
-                        .fromCurrentRequest()
-                        .buildAndExpand("1")
-                        .toUri();
-                return ResponseEntity.created(location).build();
-            }
-        });
-*
-* */
 
     @Test
     public void postUserAndGetCreatedStatusCode() throws Exception {
-        ResponseEntity<Object> r=new ResponseEntity<>("", HttpStatus.CREATED);
 
-        when(this.userController.createUser(UserInitializr.getUser("1"))).thenReturn(new ResponseEntity(HttpStatus.CREATED));
-
+        // given
         String userFromFile = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
+        ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CREATED);
+        doReturn(r).when(userController).createUser(any());
 
+        // when
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/users")
                 .accept(MediaType.APPLICATION_JSON)
                 .content(userFromFile)
                 .contentType(MediaType.APPLICATION_JSON);
 
-
-
+        // then
         this.mvc.perform(request)
-                .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().json(userFromFile));
+                .andDo(print());
 
     }
+
+    @Test
+    public void deleteExistingUserWillReturnOk() throws Exception {
+
+        // given
+        doAnswer(new Answer<Void>() {
+            public Void answer(InvocationOnMock invocation) {
+                Object[] args = invocation.getArguments();
+                return null;
+            }
+        }).when(userController).deleteUser("1");
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .delete("/users/1")
+                .accept(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
+
+    @Test
+    public void deleteNotExistingUserWillThrowNotFoundException() throws Exception {
+
+        // given
+        doThrow(NotFoundException.class).when(userController).deleteUser("blabla");
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .delete("/users/blabla")
+                .accept(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+
 }

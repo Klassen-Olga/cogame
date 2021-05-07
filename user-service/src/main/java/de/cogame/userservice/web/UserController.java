@@ -70,6 +70,11 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable String id) {
 
+        Optional<User> user = userRepository.findById(id);
+
+        if (!user.isPresent()){
+            throw new NotFoundException("User with id "+id+" does not exist");
+        }
         userRepository.deleteById(id);
 
     }
