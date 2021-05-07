@@ -12,19 +12,22 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
+/*
+*
+* Test class with embedded mongoDb
+* with injected UserRepository Bean from the context
+* */
 @DataMongoTest
 @RunWith(SpringRunner.class)
 public class UserRepositoryDataTests {
+
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
-    UserController userController;
-
 
     @Before
     public void before() throws IOException {
@@ -36,14 +39,26 @@ public class UserRepositoryDataTests {
     }
 
     @Test
-    public void getAllUsersReturnsFalse() throws IOException {
+    public void usersRepositoryIsNotEmpty() throws IOException {
 
-        //List<User> users = userRepository.findAll();
-        //assertThat(userRepository.findAll().isEmpty()).isEqualTo(false);
+        List<User> users = userRepository.findAll();
+        assertThat(userRepository.findAll().isEmpty()).isEqualTo(false);
 
-        User user=  UserInitializr.getUser("1");
-        user.setName("");
-        userController.createUser(user);
+
+    }
+    @Test
+    public void getUserReturnsAlbert() throws IOException {
+
+        Optional<User> user = userRepository.findById("1");
+        if (user.isPresent()){
+            assertThat(user.get().getName()).isEqualTo("Albert");
+            assertThat(user.get().getDateOdBirth()).isEqualTo(LocalDate.of(1996, 04,05));
+            assertThat(user.get().getAccount().getEmail()).isEqualTo("mail@mail.com");
+            assertThat(user.get().getAccount().getPassword()).isEqualTo("12345678");
+            assertThat(user.get().getPlaceOfLiving().getCity()).isEqualTo("Berlin");
+        }
+
+
     }
 }
 

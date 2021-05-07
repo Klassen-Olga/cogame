@@ -12,7 +12,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
-
+/*
+* Test class with userRepository as mock object
+* */
 @RunWith(SpringRunner.class)
 public class UserRepositoryMockitoTests {
 

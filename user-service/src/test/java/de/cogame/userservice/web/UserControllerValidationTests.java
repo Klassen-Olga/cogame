@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /*
- * Test class to mock UserController's methods
+ * Test class to mock UserController's post method validation
  *  without any spring context
  *
  * */
@@ -49,7 +49,7 @@ public class UserControllerValidationTests {
 
 
     @Before
-    public void before() throws IOException {
+    public void before() {
 
         this.objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
