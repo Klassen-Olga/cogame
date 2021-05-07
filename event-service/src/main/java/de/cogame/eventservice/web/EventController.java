@@ -46,6 +46,11 @@ public class EventController {
         getEventOrThrowNotFoundException(id);
         return messageServiceProxy.getMessages(id);
     }
+    @GetMapping("/messages/{id}")
+    public Message getMessageOfEvent(@PathVariable String id) {
+
+        return messageServiceProxy.getMessage(id);
+    }
 
     @GetMapping("/events/{id}/users")
     public Map<String, String> getUsersOfEvent(@PathVariable String id) {

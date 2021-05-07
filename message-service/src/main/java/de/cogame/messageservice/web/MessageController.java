@@ -28,6 +28,13 @@ public class MessageController {
 
         return messageRepository.findByEventId(id);
     }
+
+    @GetMapping("/messages/{id}")
+    public Message getMessage(@PathVariable String id){
+
+        return messageRepository.findById(id).get();
+    }
+
     @DeleteMapping("/events/{id}/messages")
     public void deleteMessages(@PathVariable String id){
          messageRepository.deleteMessagesById(id);

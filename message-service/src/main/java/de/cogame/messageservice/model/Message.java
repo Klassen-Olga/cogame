@@ -1,5 +1,6 @@
 package de.cogame.messageservice.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,5 +24,6 @@ public class Message {
     @NotEmpty
     private String eventId;
     private String text;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt=LocalDateTime.now();
 }

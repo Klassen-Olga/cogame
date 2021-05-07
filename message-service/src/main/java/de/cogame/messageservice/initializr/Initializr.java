@@ -19,7 +19,7 @@ public class Initializr {
     @EventListener(ApplicationReadyEvent.class)
     public void go(){
 
-        Message message=new Message("",
+        Message message=new Message("1",
                 "1",
                 "Name1",
                 "1",

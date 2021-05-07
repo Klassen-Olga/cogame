@@ -12,7 +12,8 @@ public interface MessageServiceProxy {
     @GetMapping("/events/{id}/messages")
     public List<Message> getMessages(@PathVariable String id);
 
-
+    @GetMapping("/messages/{id}")
+    public Message getMessage(@PathVariable String id);
 }
 
 
