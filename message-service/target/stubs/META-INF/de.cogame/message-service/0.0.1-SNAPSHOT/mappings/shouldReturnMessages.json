@@ -1,5 +1,5 @@
 {
-  "id" : "e906fd33-6b88-4a1e-8280-fec40ca02d0b",
+  "id" : "7cf099e5-e4d9-42e0-bec9-22f7f8aa56d6",
   "request" : {
     "url" : "/events/20/messages",
     "method" : "GET"
@@ -12,5 +12,5 @@
     },
     "transformers" : [ "response-template", "spring-cloud-contract" ]
   },
-  "uuid" : "e906fd33-6b88-4a1e-8280-fec40ca02d0b"
+  "uuid" : "7cf099e5-e4d9-42e0-bec9-22f7f8aa56d6"
 }
