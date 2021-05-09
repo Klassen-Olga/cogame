@@ -1,4 +1,4 @@
-package de.cogame.eventservice;
+package de.cogame.eventservice.web;
 
 
 import de.cogame.eventservice.web.messageproxy.Message;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
         stubsMode = StubRunnerProperties.StubsMode.LOCAL,
         ids = {"de.cogame:message-service:+:stubs:8002"})
-class SpringContractTests {
+class EventControllerContractTests {
 
     @Autowired
     private MessageServiceProxy messageServiceProxy;

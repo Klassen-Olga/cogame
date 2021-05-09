@@ -103,6 +103,7 @@
 					<contractsDirectory>src/test/resources/contracts</contractsDirectory>
 					<testFramework>JUNIT</testFramework>
 					<classifier>stubs</classifier>
+
 				</configuration>
 
 			</plugin>

@@ -24,7 +24,7 @@ public class EventController {
     EventRepository eventRepository;
     MessageServiceProxy messageServiceProxy;
 
-    @GetMapping("/")
+    @GetMapping("/greeting")
     public String greeting() {
         return "Hello from event service!";
     }
