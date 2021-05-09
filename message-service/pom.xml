@@ -100,7 +100,11 @@
 				<extensions>true</extensions>
 				<configuration>
 					<baseClassForTests>contract.BaseClass</baseClassForTests>
+					<contractsDirectory>src/test/resources/contracts</contractsDirectory>
+					<testFramework>JUNIT</testFramework>
+					<classifier>stubs</classifier>
 				</configuration>
+
 			</plugin>
 		</plugins>
 	</build>
