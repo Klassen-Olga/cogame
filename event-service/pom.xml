@@ -64,11 +64,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>de.cogame</groupId>
             <artifactId>message-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
     <dependencyManagement>
