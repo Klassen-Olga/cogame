@@ -6,9 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import static java.time.format.DateTimeFormatter.*;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +28,6 @@ public class Message {
     @NotEmpty
     private String eventId;
     private String text;
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime createdAt=LocalDateTime.now();
 }
