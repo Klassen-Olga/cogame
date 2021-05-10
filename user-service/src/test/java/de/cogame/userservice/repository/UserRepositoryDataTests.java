@@ -30,7 +30,7 @@ public class UserRepositoryDataTests {
     UserRepository userRepository;
 
     @Before
-    public void before() throws IOException {
+    public void before(){
 
         userRepository.deleteAll();
         this.userRepository.save(UserInitializr.getUser("1"));
@@ -41,10 +41,7 @@ public class UserRepositoryDataTests {
     @Test
     public void usersRepositoryIsNotEmpty() throws IOException {
 
-        List<User> users = userRepository.findAll();
         assertThat(userRepository.findAll().isEmpty()).isEqualTo(false);
-
-
     }
     @Test
     public void getUserReturnsAlbert() throws IOException {

@@ -126,7 +126,7 @@ public class EventControllerValidationTests {
 
 
     }
-    
+
 
     void testValidationForPostMethod(String message, Event event) throws Exception {
         String jsonString = objectMapper.writeValueAsString(event);
