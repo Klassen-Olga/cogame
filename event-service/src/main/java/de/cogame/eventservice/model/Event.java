@@ -25,25 +25,26 @@ public class Event {
     private String name;
     private String description;
 
-    @Future
+    @Future(message = "Date and time of the event should be in the future")
     private LocalDateTime dateTimeOfEvent;
     @Valid
     private Address placeAddress;
     @NotNull
-    @Size(min = 1, message="At least 1 activity required")
+    @Size(min = 1, message = "At least 1 activity required")
     private List<@Valid Activity> activities;
-    @NotEmpty
+    @NotEmpty(message = "Creator id should not be empty")
     private String creatorUserId;
     // redundancy to prevent calling the user-service
     @Valid
-    private Map<@NotBlank String, @NotBlank String> participants;
+    private Map<@NotBlank(message = "Participant id should not be empty") String,
+            @NotBlank(message = "Participant name should not be empty") String> participants;
 
     //includes the creator
     @Min(value = 2, message = "Participants number of any event should be more than 1 person")
     private int participantsNumber;
 
     private List<Tool> tools;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime createdAt = LocalDateTime.now();
 
 }
