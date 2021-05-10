@@ -102,16 +102,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                <version>3.0.2</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <packageWithBaseClasses>de.cogame.messageservice</packageWithBaseClasses>
-                </configuration>
-
-            </plugin>
         </plugins>
     </build>
 
