@@ -19,10 +19,10 @@
     }
   ],
   "creatorUserId": "608873cd2e22d5088f7cdb5d",
-  "participants": [
-    {"id": "1", "name": "Albert"},
-    {"id": "1", "name": "Cup"}
-  ],
+  "participants": {
+    "1": "Albert",
+    "2": "Cup"
+  },
   "participantsNumber": 4,
   "tools": [
     {

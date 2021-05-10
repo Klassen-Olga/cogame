@@ -35,7 +35,7 @@ public class EventController {
     }
 
     @GetMapping("/events/{id}")
-    public Event getEvents(@PathVariable String id) {
+    public Event getEvent(@PathVariable String id) {
 
         return getEventOrThrowNotFoundException(id);
     }
@@ -66,9 +66,10 @@ public class EventController {
     }
 
     @DeleteMapping("/events/{id}")
-    public void getEvents(@RequestBody Event event) {
+    public void deleteEvent(@PathVariable String id) {
 
-        eventRepository.delete(event);
+        getEventOrThrowNotFoundException(id);
+        eventRepository.deleteById(id);
     }
 
     @PutMapping("/events")
@@ -80,7 +81,7 @@ public class EventController {
     }
 
     // TODO: Document request format {"id":"1", "name":"myName"}
-    @PutMapping("/events/{eventId}/user-id")
+    @PutMapping("/events/{eventId}/user")
     public void addUser(@Valid @RequestBody Map< String, String> user, @PathVariable String eventId) {
 
         Event event = getEventOrThrowNotFoundException(eventId);
