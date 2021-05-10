@@ -20,7 +20,10 @@ import java.util.List;
 
 import static org.mockito.Mockito.when;
 
-
+/*
+* Base class for spring contract-driven testing
+* Describes rules for testing of MessageController and MessageRepository from event-service
+* */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MessageServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class BaseClass {
@@ -32,6 +35,11 @@ public class BaseClass {
     @MockBean
     private MessageRepository messageRepository;
 
+    /*
+    *
+    * Sets up MackBuilder and creates mocks for message repository,
+    * which should be used from event-service and other consumers
+    * */
     @BeforeEach
     public void setup() {
        /*when(messageRepository.findById("33"))

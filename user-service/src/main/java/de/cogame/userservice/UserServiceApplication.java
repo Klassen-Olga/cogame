@@ -12,11 +12,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
-//@EnableConfigurationProperties
-@SpringBootApplication/*(exclude = {
-		MongoAutoConfiguration.class,
-		MongoDataAutoConfiguration.class
-})*/
+@SpringBootApplication
 @Import({CustomExceptionHandler.class, SecurityConfiguration.class})
 public class UserServiceApplication {
 

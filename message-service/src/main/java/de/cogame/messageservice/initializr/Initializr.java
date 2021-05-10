@@ -9,6 +9,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
@@ -18,26 +19,11 @@ public class Initializr {
 
     @EventListener(ApplicationReadyEvent.class)
     public void go(){
-
-        Message message=new Message("1",
-                "1",
-                "Name1",
-                "1",
-                "A great place" , LocalDateTime.now());
-        Message message2=new Message("",
-                "2",
-                "Name2",
-                "1",
-                "A great place" , LocalDateTime.now());
-        Message message3=new Message("",
-                "3",
-                "Name3",
-                "1",
-                "A great place" , LocalDateTime.now());
+        List<Message> messages=MessageInitializr.getMessages();
         messageRepository.deleteAll();
-        messageRepository.save(message);
-        messageRepository.save(message2);
-        messageRepository.save(message3);
+        messageRepository.save(messages.get(0));
+        messageRepository.save(messages.get(1));
+        messageRepository.save(messages.get(2));
 
 
     }

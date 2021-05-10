@@ -54,6 +54,7 @@ public class EventControllerTests {
     Resource eventFile;
 
     ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+
     @Test
     public void returnsHelloFromEventService() throws Exception {
 
