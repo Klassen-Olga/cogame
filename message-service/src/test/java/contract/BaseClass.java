@@ -5,6 +5,7 @@ import de.cogame.messageservice.model.Message;
 import de.cogame.messageservice.repository.MessageRepository;
 import de.cogame.messageservice.web.MessageController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +55,9 @@ public class BaseClass {
 
         StandaloneMockMvcBuilder standaloneMockMvcBuilder = MockMvcBuilders.standaloneSetup(messageController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
+    }
+    @Test
+    public void test(){
+
     }
 }
