@@ -1,6 +1,8 @@
 package de.cogame.userservice.model;
 
 import de.cogame.globalhandler.validation.EnumValidation;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,21 +21,25 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
+@ApiModel(description = "Contains user details for the cogame project")
 public class User {
 
     @Id
     private String id;
-    @Size(min=2, message="Name should have at least 2 characters")
+    @Size(min = 2, message = AttributeDescription.userName)
+    @ApiModelProperty(notes =  AttributeDescription.userName)
     private String name;
-    @Past(message = "Date must be in the past")
+    @Past(message = AttributeDescription.dateOdBirth)
+    @ApiModelProperty(notes = AttributeDescription.dateOdBirth)
     private LocalDate dateOdBirth;
-    @EnumValidation(enumClass = Sex.class, message = "Allowed values: MALE, FEMALE, OTHER")
+    @EnumValidation(enumClass = Sex.class, message = AttributeDescription.sex)
+    @ApiModelProperty(notes = AttributeDescription.sex)
     private String sex;
     @Valid
     private PlaceOfLiving placeOfLiving;
     @Valid
     private Occupation occupation;
-    @Size(min=4, message="Enter a valid phone number")
+    @Size(min = 4, message = "Enter a valid phone number")
     private String phoneNumber;
 
 
