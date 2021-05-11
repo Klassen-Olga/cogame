@@ -1,5 +1,7 @@
 package de.cogame.userservice.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,11 +12,17 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(description = "Contains details to user's occupation: place and art of occupation")
 public class Occupation {
 
-    @Size(min = 5, message = "Enter a valid occupation name e.g. 'Student', 'Worker'")
+    @Size(min = AttributeDescription.occupationNameSize, message =AttributeDescription.occupationName)
+    @ApiModelProperty(notes = AttributeDescription.occupationName)
     private String occupationName;
-    @Size(min = 4, message = "Enter a valid place of occupation e.g. 'University of applied science'")
+
+
+    @Size(min = AttributeDescription.placeOfOccupationSize, message =AttributeDescription.placeOfOccupation)
+    @ApiModelProperty(notes = AttributeDescription.placeOfOccupation)
     private String placeOfOccupation;
+
 
 }

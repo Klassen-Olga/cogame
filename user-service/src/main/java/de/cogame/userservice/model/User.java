@@ -26,28 +26,38 @@ public class User {
 
     @Id
     private String id;
-    @Size(min = 2, message = AttributeDescription.userName)
+
+    @Size(min = AttributeDescription.userNameSize, message = AttributeDescription.userName)
     @ApiModelProperty(notes =  AttributeDescription.userName)
     private String name;
+
     @Past(message = AttributeDescription.dateOdBirth)
     @ApiModelProperty(notes = AttributeDescription.dateOdBirth)
     private LocalDate dateOdBirth;
+
     @EnumValidation(enumClass = Sex.class, message = AttributeDescription.sex)
     @ApiModelProperty(notes = AttributeDescription.sex)
     private String sex;
+
+    @ApiModelProperty(notes=AttributeDescription.phoneNumber)
+    @Size(min = AttributeDescription.phoneNumberSize, message = AttributeDescription.phoneNumber)
+    private String phoneNumber;
+
     @Valid
     private PlaceOfLiving placeOfLiving;
     @Valid
     private Occupation occupation;
-    @Size(min = 4, message = "Enter a valid phone number")
-    private String phoneNumber;
-
-
-    private List<String> favouriteBooks;
-    private List<String> favouriteMovies;
-    private List<String> favouriteGames;
-    private List<String> favouriteMusic;
     @Valid
     private Account account;
+
+
+    @ApiModelProperty(notes=AttributeDescription.preferencesList)
+    private List<String> favouriteBooks;
+    @ApiModelProperty(notes=AttributeDescription.preferencesList)
+    private List<String> favouriteMovies;
+    @ApiModelProperty(notes=AttributeDescription.preferencesList)
+    private List<String> favouriteGames;
+    @ApiModelProperty(notes=AttributeDescription.preferencesList)
+    private List<String> favouriteMusic;
 
 }

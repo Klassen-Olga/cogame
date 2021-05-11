@@ -5,6 +5,7 @@ import de.cogame.eventservice.repository.EventRepository;
 import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
 import de.cogame.globalhandler.exception.NotFoundException;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,10 +82,11 @@ public class EventController {
         eventRepository.save(event);
 
     }
-
-    // TODO: Document request format {"id":"1", "name":"myName"}
+    
     @PutMapping("/events/{eventId}/user")
-    public void addUser(@Valid @RequestBody Map<String, String> user, @PathVariable String eventId) {
+    public void addUser(@Valid @RequestBody  @ApiParam(
+            value = "Request format {\"id\":\"1\", \"name\":\"myName\"}"
+    ) Map<String, String> user, @PathVariable String eventId) {
 
         Event event = getEventOrThrowNotFoundException(eventId);
         if (!user.get("id").isBlank()) {

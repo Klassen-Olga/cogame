@@ -101,7 +101,7 @@ public class UserControllerValidationTests {
         user.getOccupation().setOccupationName("");
 
         // then
-        testValidationForPostMethod("Enter a valid occupation name e.g. 'Student', 'Worker'", user);
+        testValidationForPostMethod("Occupation name should be at least 5 characters e.g. 'Student', 'Worker'", user);
 
     }
 
@@ -125,7 +125,7 @@ public class UserControllerValidationTests {
         user.getPlaceOfLiving().setCity("");
 
         // then
-        testValidationForPostMethod("Enter a valid city name", user);
+        testValidationForPostMethod("City should contain al least 2 character", user);
 
     }
 

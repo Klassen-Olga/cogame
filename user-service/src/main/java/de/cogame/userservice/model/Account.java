@@ -1,5 +1,7 @@
 package de.cogame.userservice.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,12 +16,16 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(description = "Contains authentication data: login and password")
 public class Account {
 
-    @Email(message = "Email should have form example@ex.com")
+    @Email(message = AttributeDescription.email)
     @NotBlank
+    @ApiModelProperty(notes = AttributeDescription.email)
     private String email;
-    @Size(min = 6, message = "Password should be longer than 5 characters")
+
+    @Size(min = AttributeDescription.passwordSize, message = AttributeDescription.password)
+    @ApiModelProperty(notes = AttributeDescription.password)
     private String password;
 
 

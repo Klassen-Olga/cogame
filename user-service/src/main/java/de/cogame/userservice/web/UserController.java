@@ -4,6 +4,7 @@ package de.cogame.userservice.web;
 import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
+import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;

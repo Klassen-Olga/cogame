@@ -42,10 +42,15 @@ public class UserInitializr {
         music.add("music2");
         music.add("music3");
 
-        return new User(id,"Albert", LocalDate.of(1996, 4, 5), "FEMALE",
+        return new User(id,
+                "Albert",
+                LocalDate.of(1996, 4, 5),
+                "FEMALE",
+                "19083209",
                 new PlaceOfLiving("Berlin", "Germany"),
-                new Occupation("Student", "University of applied science"), "19083209",
-                books, movies, games, music, new Account("mail@mail.com", "12345678"));
+                new Occupation("Student", "University of applied science"),
+                new Account("mail@mail.com", "12345678"),
+                books, movies, games, music);
 
     }
 }
