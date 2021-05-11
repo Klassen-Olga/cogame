@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +20,14 @@ import java.util.Optional;
 @RestController
 public class EventController {
 
+
     EventRepository eventRepository;
     MessageServiceProxy messageServiceProxy;
 
+
     @GetMapping("/greeting")
     public String greeting() {
+
         return "Hello from event service!";
     }
 
@@ -82,10 +84,10 @@ public class EventController {
 
     // TODO: Document request format {"id":"1", "name":"myName"}
     @PutMapping("/events/{eventId}/user")
-    public void addUser(@Valid @RequestBody Map< String, String> user, @PathVariable String eventId) {
+    public void addUser(@Valid @RequestBody Map<String, String> user, @PathVariable String eventId) {
 
         Event event = getEventOrThrowNotFoundException(eventId);
-        if (!user.get("id").isBlank()){
+        if (!user.get("id").isBlank()) {
             event.getParticipants().put(user.get("id"), user.get("name"));
             eventRepository.save(event);
         }
