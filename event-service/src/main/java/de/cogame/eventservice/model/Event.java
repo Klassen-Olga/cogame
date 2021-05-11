@@ -2,6 +2,8 @@ package de.cogame.eventservice.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,33 +20,50 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Document
+@ApiModel(description = "Contains all information about a specific event, including users id, who participates in the event")
 public class Event {
+
     @Id
     private String id;
-    @Size(min = 3, message = "Name should have at least 3 characters ")
+
+    @ApiModelProperty(notes = AttributeDescription.name)
+    @Size(min = AttributeDescription.nameSize, message = AttributeDescription.name)
     private String name;
+
     private String description;
 
-    @Future(message = "Date and time of the event should be in the future")
+    @Future(message = AttributeDescription.dateAndTime)
+    @ApiModelProperty(notes = AttributeDescription.dateAndTime)
     private LocalDateTime dateTimeOfEvent;
+
+    //includes the creator
+    @Min(value = AttributeDescription.participantsNumberMin, message = AttributeDescription.participantsNumber)
+    @ApiModelProperty(notes = AttributeDescription.participantsNumber)
+    private int participantsNumber;
+
+    @NotEmpty(message = AttributeDescription.creatorUserId)
+    @ApiModelProperty(notes = AttributeDescription.creatorUserId)
+    private String creatorUserId;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     @Valid
     private Address placeAddress;
+
     @NotNull
-    @Size(min = 1, message = "At least 1 activity required")
+    @Size(min = AttributeDescription.activitiesSize, message = AttributeDescription.activities)
+    @ApiModelProperty(notes = AttributeDescription.activities)
     private List<@Valid Activity> activities;
-    @NotEmpty(message = "Creator id should not be empty")
-    private String creatorUserId;
-    // redundancy to prevent calling the user-service
+
     @Valid
+    @ApiModelProperty(notes = AttributeDescription.participants)
     private Map<@NotBlank(message = "Participant id should not be empty") String,
             @NotBlank(message = "Participant name should not be empty") String> participants;
 
-    //includes the creator
-    @Min(value = 2, message = "Participants number of any event should be more than 1 person")
-    private int participantsNumber;
+
 
     private List<Tool> tools;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
-    private LocalDateTime createdAt = LocalDateTime.now();
+
 
 }

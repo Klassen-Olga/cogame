@@ -28,10 +28,17 @@ public class EventInitializr {
         List<Tool> tools=new LinkedList<>();
         tools.add(new Tool("Monopoly game", true));
         tools.add(new Tool("Twister game", false));
-        Event event= new Event(id, "Friends evening", "A party where we are going to play both monopoly and twister",
+        Event event= new Event(id,
+                "Friends evening",
+                "A party where we are going to play both monopoly and twister",
                 LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)),
+                4,
+                "608873cd2e22d5088f7cdb5d",
+                LocalDateTime.now(),
                 new Address("Norweische Street 15", "Erfurt", "Germany"),
-                activities, "608873cd2e22d5088f7cdb5d", participants, 4, tools, LocalDateTime.now());
+                activities,
+                participants,
+                 tools );
         event.setCreatedAt( LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)));
         return event;
     }

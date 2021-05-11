@@ -1,5 +1,7 @@
 package de.cogame.eventservice.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,11 +11,18 @@ import javax.validation.constraints.Size;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(description = "Contains address info of the event")
 public class Address {
-    @Size(min=5, message="Street should have at least 5 characters")
+
+    @Size(min=AttributeDescription.streetSize, message=AttributeDescription.street)
+    @ApiModelProperty(notes =  AttributeDescription.street)
     private String streetAndHomeNumber;
-    @Size(min=3, message="City should have at least 3 characters")
+
+    @Size(min=AttributeDescription.citySize, message=AttributeDescription.city)
+    @ApiModelProperty(notes =  AttributeDescription.city)
     private String city;
-    @Size(min=4, message="Country should have at least 4 characters")
+
+    @Size(min=AttributeDescription.countrySize, message=AttributeDescription.country)
+    @ApiModelProperty(notes =  AttributeDescription.country)
     private String country;
 }

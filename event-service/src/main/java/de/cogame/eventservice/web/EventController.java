@@ -82,11 +82,11 @@ public class EventController {
         eventRepository.save(event);
 
     }
-    
+
     @PutMapping("/events/{eventId}/user")
-    public void addUser(@Valid @RequestBody  @ApiParam(
-            value = "Request format {\"id\":\"1\", \"name\":\"myName\"}"
-    ) Map<String, String> user, @PathVariable String eventId) {
+    public void addUser(@Valid @RequestBody @ApiParam(
+            value = "Request format {\"id\":\"1\", \"name\":\"myName\"}")
+                                Map<String, String> user, @PathVariable String eventId) {
 
         Event event = getEventOrThrowNotFoundException(eventId);
         if (!user.get("id").isBlank()) {
