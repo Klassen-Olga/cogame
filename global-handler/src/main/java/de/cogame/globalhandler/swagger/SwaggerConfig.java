@@ -21,7 +21,6 @@ import java.util.Set;
 //      http://localhost:8001/swagger-ui/index.html
 @Configuration
 @EnableSwagger2
-@EnableWebMvc
 //TODO: add authentification details
 public class SwaggerConfig {
 
