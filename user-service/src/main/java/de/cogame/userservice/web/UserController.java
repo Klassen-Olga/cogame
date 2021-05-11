@@ -2,14 +2,10 @@ package de.cogame.userservice.web;
 
 
 import de.cogame.globalhandler.exception.NotFoundException;
-
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
