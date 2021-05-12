@@ -15,6 +15,9 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.BDDMockito.given;
 
+/*
+ * Test class with event repository as mock object
+ * */
 @RunWith(SpringRunner.class)
 public class EventsRepositoryMockitoTests {
 
@@ -22,12 +25,12 @@ public class EventsRepositoryMockitoTests {
     private EventRepository eventRepository;
 
     @Test
-    public void getEventById1ReturnsFriendsEvening(){
+    public void getEventById1ReturnsFriendsEvening() {
         given(eventRepository.findById("1")).willReturn(Optional.of(EventInitializr.getEvent("1")));
 
         Optional<Event> event = eventRepository.findById("1");
         assertThat(event.isPresent()).isEqualTo(true);
-        Event event1=event.get();
+        Event event1 = event.get();
         assertThat(event1.getName()).isEqualTo("Friends evening");
         assertThat(event1.getDescription()).isEqualTo("A party where we are going to play both monopoly and twister");
         assertThat(event1.getParticipantsNumber()).isEqualTo(4);

@@ -13,22 +13,30 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class will be used for event-api testing
+ */
 public class EventInitializr {
-    public static Event getEvent(String id){
-        List<Activity> activities=new LinkedList<>();
+
+    /**
+
+     * @param id which should habe the event, empty String will autogenerate the id
+     * @return an initialized event
+     */
+    public static Event getEvent(String id) {
+        List<Activity> activities = new LinkedList<>();
         activities.add(new Activity("TABLE", "Monopoly"));
         activities.add(new Activity("ACTIVE", "Twister"));
 
-        Map<String, String> participants=new HashMap<>();
+        Map<String, String> participants = new HashMap<>();
         participants.put("1", "Albert");
         participants.put("2", "Cup");
 
 
-
-        List<Tool> tools=new LinkedList<>();
+        List<Tool> tools = new LinkedList<>();
         tools.add(new Tool("Monopoly game", true));
         tools.add(new Tool("Twister game", false));
-        Event event= new Event(id,
+        Event event = new Event(id,
                 "Friends evening",
                 "A party where we are going to play both monopoly and twister",
                 LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)),
@@ -38,8 +46,8 @@ public class EventInitializr {
                 new Address("Norweische Street 15", "Erfurt", "Germany"),
                 activities,
                 participants,
-                 tools );
-        event.setCreatedAt( LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)));
+                tools);
+        event.setCreatedAt(LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)));
         return event;
     }
 }

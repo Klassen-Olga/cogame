@@ -1,0 +1,6 @@
+de\cogame\messageservice\initializr\Initializr.class
+de\cogame\messageservice\model\Message.class
+de\cogame\messageservice\initializr\MessageInitializr.class
+de\cogame\messageservice\repository\MessageRepository.class
+de\cogame\messageservice\MessageServiceApplication.class
+de\cogame\messageservice\web\MessageController.class

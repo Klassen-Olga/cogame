@@ -1,9 +1,7 @@
 package de.cogame.eventservice.web;
 
 
-import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +9,10 @@ import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRun
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
+/**
+ * Ent-to-end test class between message-service and event-service
+ * actual commented out because of guthub build failing
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @AutoConfigureStubRunner(
@@ -28,6 +25,7 @@ class EventControllerContractTests {
     private MessageServiceProxy messageServiceProxy;
 
     // not passed gihub build
+
     /*@Test
     void shouldReturnTwoMessagesWithIds21And22() {
 

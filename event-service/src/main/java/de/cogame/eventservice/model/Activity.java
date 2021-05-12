@@ -1,6 +1,5 @@
 package de.cogame.eventservice.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import de.cogame.globalhandler.validation.EnumValidation;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,10 +9,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 
+/**
+ * Represents activity unit of the event
+ * important features: art of the activity and activity name
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "Contains information to activities of the event")
+@ApiModel(description = "Contains information about the activities of the event")
 public class Activity{
 
     public enum ActivityArt {

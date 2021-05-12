@@ -29,6 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+ * Test class to mock EventController's post method validation
+ *  without any spring context
+ *
+ * */
 @Log4j2
 @RunWith(SpringRunner.class)
 @WebMvcTest(EventController.class)

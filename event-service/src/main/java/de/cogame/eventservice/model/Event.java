@@ -16,6 +16,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Main entity class which contains simple information to the event such as id, name, date and time
+ * and other entity classes such as Address and Activity
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,7 +40,8 @@ public class Event {
     @ApiModelProperty(notes = AttributeDescription.dateAndTime)
     private LocalDateTime dateTimeOfEvent;
 
-    //includes the creator
+    //min number of the participants needed for the event
+    // includes the creator
     @Min(value = AttributeDescription.participantsNumberMin, message = AttributeDescription.participantsNumber)
     @ApiModelProperty(notes = AttributeDescription.participantsNumber)
     private int participantsNumber;

@@ -25,7 +25,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.StreamUtils;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/*
+ * Test class to mock rest methods without any spring context
+ *
+ * */
 @Log4j2
 @RunWith(SpringRunner.class)
 @WebMvcTest(EventController.class)
@@ -183,12 +190,12 @@ public class EventControllerTests {
                 .andDo(print());
 
     }
+
     @Test
     public void deleteNotExistingEventWillThrowNotFoundException() throws Exception {
 
         // given
         doThrow(NotFoundException.class).when(eventController).deleteEvent("222");
-
 
 
         // when
@@ -206,7 +213,7 @@ public class EventControllerTests {
     @Test
     public void addUserWillReturn200StatusCode() throws Exception {
 
-        Map<String, String> user=new HashMap<>();
+        Map<String, String> user = new HashMap<>();
         user.put("id", "12");
         user.put("name", "Truli");
         // given

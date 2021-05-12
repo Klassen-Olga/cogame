@@ -17,10 +17,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Restapi controller for event-service module
+ * Manages get, post, put and delete methods
+ */
 @AllArgsConstructor
 @RestController
 public class EventController {
-
 
     EventRepository eventRepository;
     MessageServiceProxy messageServiceProxy;
@@ -57,6 +60,9 @@ public class EventController {
         return event.getParticipants();
     }
 
+    /**
+     * Saves an event into the database and returns 201 created status code
+     */
     @PostMapping("/events")
     public ResponseEntity<Object> createEvent(@Valid @RequestBody Event event) {
 
@@ -83,6 +89,11 @@ public class EventController {
 
     }
 
+    /*
+    * Adds an user to the existing event
+    * Request format for user map  {"id":"1", "name":"myName"}
+    *
+    * */
     @PutMapping("/events/{eventId}/user")
     public void addUser(@Valid @RequestBody @ApiParam(
             value = "Request format {\"id\":\"1\", \"name\":\"myName\"}")
@@ -93,7 +104,6 @@ public class EventController {
             event.getParticipants().put(user.get("id"), user.get("name"));
             eventRepository.save(event);
         }
-
     }
 
     public Event getEventOrThrowNotFoundException(String id) {

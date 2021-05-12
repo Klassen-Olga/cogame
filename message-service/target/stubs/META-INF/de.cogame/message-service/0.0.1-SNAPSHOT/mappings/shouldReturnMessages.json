@@ -1,0 +1,16 @@
+{
+  "id" : "8a2fddec-ec63-4758-aee3-92be0055aabb",
+  "request" : {
+    "url" : "/events/20/messages",
+    "method" : "GET"
+  },
+  "response" : {
+    "status" : 200,
+    "body" : "[{\"id\":\"21\",\"userId\":\"21\",\"userName\":\"Dom\",\"eventId\":\"20\",\"text\":\"Great Event, Dom\",\"createdAt\":\"2023-01-01T14:00\"},{\"id\":\"22\",\"userId\":\"22\",\"userName\":\"Bom\",\"eventId\":\"20\",\"text\":\"Great Event, Bom\",\"createdAt\":\"2023-01-01T13:00\"}]",
+    "headers" : {
+      "Content-Type" : "application/json"
+    },
+    "transformers" : [ "response-template", "spring-cloud-contract" ]
+  },
+  "uuid" : "8a2fddec-ec63-4758-aee3-92be0055aabb"
+}

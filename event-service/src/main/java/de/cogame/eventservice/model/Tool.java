@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * ontains information to a tool, that is required for a certain event e.g. Ball, Beer
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
