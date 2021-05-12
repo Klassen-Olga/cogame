@@ -1,6 +1,5 @@
 package de.cogame.globalhandler.exception;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,61 +7,87 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+
+/**
+ * Defines common exception handlers for all RestControllers in the project
+ * Once an exception occurs, the  response entity will be returned with the exception message
+ */
 @ControllerAdvice
 @RestController
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Will be called when one of the requested resources is not found
+     *
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 404 status code and details of the exception
+     */
     @ExceptionHandler(NotFoundException.class)
     public final ResponseEntity<Object> notFoundException
-            (NotFoundException ex, WebRequest webRequest){
-        String m= ex.getMessage();
+    (NotFoundException ex, WebRequest webRequest) {
 
-        ExceptionResponse exceptionResponse=new ExceptionResponse(LocalDate.now(), ex.getMessage(),
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), ex.getMessage(),
                 webRequest.getDescription(false));
-        return  new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Will be called, when an exception will be thrown which is not present in this class
+     *
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 404 status code and details of the exception
+     */
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> exception
-            (NotFoundException ex, WebRequest webRequest){
-        String m= ex.getMessage();
+    (NotFoundException ex, WebRequest webRequest) {
 
-        ExceptionResponse exceptionResponse=new ExceptionResponse(LocalDate.now(), ex.getMessage(),
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), ex.getMessage(),
                 webRequest.getDescription(false));
-        return  new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Will be called, when the validation of an object in a POST or PUT methods fails
+     *
+     * @return 400 status code and details of the exception
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid
-            (MethodArgumentNotValidException ex,
-             HttpHeaders headers,
-             HttpStatus status,
-             WebRequest request){
+    (MethodArgumentNotValidException ex,
+     HttpHeaders headers,
+     HttpStatus status,
+     WebRequest request) {
 
-        ExceptionResponse exceptionResponse=new ExceptionResponse(LocalDate.now(), "Validation failed",
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), "Validation failed",
                 ex.getBindingResult().toString());
-        return  new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);    }
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
+    /**
+     * Will be called, when the required request body is missing
+     *
+     * @return 400 status code and details of the exception
+     */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable
-            (HttpMessageNotReadableException ex,
-             HttpHeaders headers,
-             HttpStatus status,
-             WebRequest request){
+    (HttpMessageNotReadableException ex,
+     HttpHeaders headers,
+     HttpStatus status,
+     WebRequest request) {
 
-        ExceptionResponse exceptionResponse=new ExceptionResponse(LocalDate.now(), "Validation failed",
-               "Required request body is missing");
-        return  new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);    }
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), "Validation failed",
+                "Required request body is missing");
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 
 
 }

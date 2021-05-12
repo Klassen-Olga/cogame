@@ -3,6 +3,10 @@ package de.cogame.globalhandler.swagger;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 
+/*
+*  Activates SwaggerProperties class to be used between SwaggerConfig class and other modules
+*
+* */
 @Service
 @EnableConfigurationProperties(SwaggerProperties.class)
 public class PropertiesEnablingClass {

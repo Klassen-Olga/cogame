@@ -3,7 +3,11 @@ package de.cogame.globalhandler.exception;
 import java.time.LocalDate;
 
 
+/**
+ * Provides standard response for all exceptions in the CustomExceptionHandler class
+ */
 public class ExceptionResponse {
+
     private LocalDate timestamp;
     private String message;
     private String details;
