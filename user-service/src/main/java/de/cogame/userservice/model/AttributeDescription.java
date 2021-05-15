@@ -25,7 +25,7 @@ public class AttributeDescription {
     public static final String occupationName="Occupation name should be at least "+occupationNameSize+" characters e.g. 'Student', 'Worker'";
     public static final String placeOfOccupation="Place of occupation should be at least "+placeOfOccupationSize+" characters e.g. 'Student', 'Worker'";
     public static final String password="Password should be longer than "+passwordSize+" characters";
-    public static final String email="Email should have form example@ex.com";
+    public static final String email="Email should be unique and have form example@ex.com";
     public static final String preferencesList="Optional info and can be initial empty";
 
 

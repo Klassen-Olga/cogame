@@ -16,7 +16,10 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
-
+/**
+ * Main entity class which contains all information to the user
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -50,7 +53,7 @@ public class User {
     @Valid
     private Account account;
 
-
+    // Optional attributes, which are needed for completing of personal account
     @ApiModelProperty(notes=AttributeDescription.preferencesList)
     private List<String> favouriteBooks;
     @ApiModelProperty(notes=AttributeDescription.preferencesList)

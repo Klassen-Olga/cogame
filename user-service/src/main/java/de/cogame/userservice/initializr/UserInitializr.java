@@ -4,20 +4,17 @@ import de.cogame.userservice.model.Account;
 import de.cogame.userservice.model.Occupation;
 import de.cogame.userservice.model.PlaceOfLiving;
 import de.cogame.userservice.model.User;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-
+/**
+ * Class will be used for user-api testing and db initialising, creates a user
+ */
 public class UserInitializr {
 
-    public static User getUser(String id){
+    public static User getUser(String id) {
         List<String> books = new LinkedList<>();
 
         books.add("book1");

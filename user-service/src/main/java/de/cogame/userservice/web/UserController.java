@@ -2,6 +2,7 @@ package de.cogame.userservice.web;
 
 
 import de.cogame.globalhandler.exception.NotFoundException;
+import de.cogame.globalhandler.exception.UniqueKeyViolation;
 import de.cogame.userservice.model.User;
 import de.cogame.userservice.repository.UserRepository;
 import io.swagger.annotations.ApiParam;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -57,15 +59,26 @@ public class UserController {
     }
     @PostMapping("/users")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user) {
-        user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
-        User savedUser=userRepository.save(user);
-        URI location= ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedUser.getId())
-                .toUri();
 
-        return ResponseEntity.created(location).build();
+        user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
+
+        try{
+            User savedUser=userRepository.save(user);
+            URI location= ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(savedUser.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).build();
+        }catch (RuntimeException exception){
+            // if exception is of type E11000 throw high level exception
+            if (exception.getMessage().contains("E11000 duplicate key error")){
+                throw new UniqueKeyViolation(exception.getMessage());
+            }
+            throw exception;
+        }
+
 
     }
 

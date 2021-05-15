@@ -57,6 +57,24 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
+     * Will be called when unique key violation is occurred
+     *
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 403 status code and details of the exception
+     */
+    @ExceptionHandler({UniqueKeyViolation.class})
+    public final ResponseEntity<Object> uniqueKeyViolation
+    (UniqueKeyViolation ex, WebRequest webRequest) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(),
+                ex.getMessage(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    /**
      * Will be called, when an exception will be thrown which is not present in this class
      *
      * @param ex         exception which is occurred

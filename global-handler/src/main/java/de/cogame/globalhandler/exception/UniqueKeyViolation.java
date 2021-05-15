@@ -2,15 +2,16 @@ package de.cogame.globalhandler.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
-/**
- * Will be thrown if user should be added to the event,
- * but the maximum number of participants has beenreached
- */
-@ResponseStatus(HttpStatus.FORBIDDEN)
-public class NumberOfParticipantsReached extends RuntimeException {
+
+/*
+* Will be thrown if a field is marked as unique and is violated
+* e.g. two users with the same email should be created
+* */
+@ResponseStatus(HttpStatus.CONFLICT)
+public class UniqueKeyViolation extends RuntimeException{
     private String message;
 
-    public NumberOfParticipantsReached(String s) {
+    public UniqueKeyViolation(String s) {
         this.message = s;
     }
 
