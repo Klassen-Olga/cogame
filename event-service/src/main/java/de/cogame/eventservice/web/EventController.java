@@ -46,6 +46,11 @@ public class EventController {
         return getEventOrThrowNotFoundException(id);
     }
 
+    /**
+     * Makes a GET request to the message-service module and picks all messages of the event
+     * @param id of event which messages are required
+     * @return a list with messages
+     */
     @GetMapping("/events/{id}/messages")
     public List<Message> getMessagesOfEvent(@PathVariable String id) {
 
@@ -53,6 +58,10 @@ public class EventController {
         return messageServiceProxy.getMessages(id);
     }
 
+    /**
+     * @param id of event which users are required
+     * @return a map of the users with key user-id and value user-name
+     */
     @GetMapping("/events/{id}/users")
     public Map<String, String> getUsersOfEvent(@PathVariable String id) {
 
@@ -91,7 +100,7 @@ public class EventController {
 
     /*
     * Adds an user to the existing event
-    * Request format for user map  {"id":"1", "name":"myName"}
+    * Request format for the request body  {"id":"1", "name":"myName"}
     *
     * */
     @PutMapping("/events/{eventId}/user")

@@ -22,9 +22,9 @@ import java.util.List;
 import static org.mockito.Mockito.when;
 
 /*
-* Base class for spring contract-driven testing
-* Describes rules for testing of MessageController and MessageRepository from event-service
-* */
+ * Base class for spring contract-driven testing
+ * Describes rules for testing of MessageController and MessageRepository from event-service
+ * */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MessageServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 public class BaseClass {
@@ -37,16 +37,16 @@ public class BaseClass {
     private MessageRepository messageRepository;
 
     /*
-    *
-    * Sets up MackBuilder and creates mocks for message repository,
-    * which should be used from event-service and other consumers
-    * */
+     *
+     * Sets up MockBuilder and creates mocks for message repository,
+     * which should be used from event-service and other consumers
+     * */
     @BeforeEach
     public void setup() {
        /*when(messageRepository.findById("33"))
                 .thenReturn(Optional.of(new Message("33", "33", "John", "33", "Great Event", LocalDateTime.of(2023, 01, 01, 13, 00))));
 */
-        List<Message> messages=new ArrayList<>();
+        List<Message> messages = new ArrayList<>();
         messages.add(new Message("21", "21", "Dom", "20", "Great Event, Dom", LocalDateTime.of(2023, 01, 01, 14, 00)));
         messages.add(new Message("22", "22", "Bom", "20", "Great Event, Bom", LocalDateTime.of(2023, 01, 01, 13, 00)));
         when(messageRepository.findByEventId("20"))
@@ -56,8 +56,9 @@ public class BaseClass {
         StandaloneMockMvcBuilder standaloneMockMvcBuilder = MockMvcBuilders.standaloneSetup(messageController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
     }
+
     @Test
-    public void test(){
+    public void test() {
 
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 /**
- * Inserts seeds for the event document into the database on the start of server
+ * Inserts a event seed into database eventdb on the start of the server
  *
  */
 @AllArgsConstructor

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class will be used for event-api testing
+ * Class will be used for event-api testing and db initialising, creates Event instance
  */
 public class EventInitializr {
 

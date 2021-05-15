@@ -6,27 +6,30 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class will be used for message-api testing and db initialising, creates 3 Message instances
+ */
 public class MessageInitializr {
 
-    public static List<Message> getMessages(){
+    public static List<Message> getMessages() {
 
-        Message message=new Message("1",
+        Message message = new Message("1",
                 "1",
                 "Name1",
                 "1",
-                "A great place" , LocalDateTime.of(2021,05,10,13,8));
-        Message message2=new Message("2",
+                "A great place", LocalDateTime.of(2021, 05, 10, 13, 8));
+        Message message2 = new Message("2",
                 "2",
                 "Name2",
                 "1",
-                "A great place" , LocalDateTime.of(2021,05,10,13,8));
-        Message message3=new Message("3",
+                "A great place", LocalDateTime.of(2021, 05, 10, 13, 8));
+        Message message3 = new Message("3",
                 "3",
                 "Name3",
                 "1",
-                "A great place" , LocalDateTime.of(2021,05,10,13,8));
+                "A great place", LocalDateTime.of(2021, 05, 10, 13, 8));
 
-        List<Message> messages=new ArrayList<>();
+        List<Message> messages = new ArrayList<>();
         messages.add(message);
         messages.add(message2);
         messages.add(message3);
