@@ -5,6 +5,7 @@ import de.cogame.eventservice.repository.EventRepository;
 import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
 import de.cogame.globalhandler.exception.NotFoundException;
+import de.cogame.globalhandler.exception.NumberOfParticipantsReached;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,7 @@ public class EventController {
 
     /**
      * Makes a GET request to the message-service module and picks all messages of the event
+     *
      * @param id of event which messages are required
      * @return a list with messages
      */
@@ -99,20 +101,41 @@ public class EventController {
     }
 
     /*
-    * Adds an user to the existing event
-    * Request format for the request body  {"id":"1", "name":"myName"}
-    *
-    * */
-    @PutMapping("/events/{eventId}/user")
+     * Adds an user to the existing event
+     * Request format for the request body  {"id":"1", "name":"myName"}
+     *
+     * */
+    @PutMapping("/events/{eventId}/users")
     public void addUser(@Valid @RequestBody @ApiParam(
             value = "Request format {\"id\":\"1\", \"name\":\"myName\"}")
                                 Map<String, String> user, @PathVariable String eventId) {
 
         Event event = getEventOrThrowNotFoundException(eventId);
-        if (!user.get("id").isBlank()) {
-            event.getParticipants().put(user.get("id"), user.get("name"));
-            eventRepository.save(event);
+        if (user.get("id").isBlank()) {
+            throw new NotFoundException("Event with id " + eventId + " does not exist");
         }
+        int participantsNumber = event.getParticipantsNumber();
+        if (participantsNumber == event.getParticipants().size()) {
+            throw new NumberOfParticipantsReached("Maximum number of participants " + participantsNumber + " reached");
+        }
+        event.getParticipants().put(user.get("id"), user.get("name"));
+        eventRepository.save(event);
+    }
+
+    /*
+     * Removes an user from the existing event
+     *
+     * */
+    @PutMapping("/events/{eventId}/users/{userId}")
+    public void deleteUser(@PathVariable String userId, @PathVariable String eventId) {
+
+        Event event = getEventOrThrowNotFoundException(eventId);
+        Map<String, String> participants = event.getParticipants();
+        String exists=participants.remove(userId);
+        if (exists==null){
+            throw new NotFoundException("User with the id " +userId+" does not exist in event with the id "+eventId);
+        }
+        eventRepository.save(event);
     }
 
     public Event getEventOrThrowNotFoundException(String id) {

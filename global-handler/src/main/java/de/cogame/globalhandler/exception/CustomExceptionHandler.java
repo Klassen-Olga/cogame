@@ -29,13 +29,31 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
      * @param webRequest gives access to request metadata
      * @return 404 status code and details of the exception
      */
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler({NotFoundException.class})
     public final ResponseEntity<Object> notFoundException
     (NotFoundException ex, WebRequest webRequest) {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), ex.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Will be called when number of participants reached
+     *
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 403 status code and details of the exception
+     */
+    @ExceptionHandler({NumberOfParticipantsReached.class})
+    public final ResponseEntity<Object> numberOfParticipantsReached
+    (NumberOfParticipantsReached ex, WebRequest webRequest) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(),
+                ex.getMessage(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN);
     }
 
     /**
