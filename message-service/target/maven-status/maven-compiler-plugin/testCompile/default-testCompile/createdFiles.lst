@@ -1,3 +1,6 @@
+de\cogame\messageservice\repository\MessageRepositoryMockitoTests.class
 contract\ContractVerifierTest.class
 contract\BaseClass.class
+de\cogame\messageservice\repository\MessageRepositoryDataTests.class
+de\cogame\messageservice\web\MessageControllerValidationTests.class
 de\cogame\messageservice\web\MessageControllerTests.class

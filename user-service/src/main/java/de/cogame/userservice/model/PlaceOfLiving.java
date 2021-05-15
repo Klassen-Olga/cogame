@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 
-
+/*
+* Model describes user's address
+* */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

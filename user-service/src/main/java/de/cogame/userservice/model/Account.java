@@ -13,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /*
-* Model class for user's authentication
-* */
+ * Model class for user's authentication
+ * */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

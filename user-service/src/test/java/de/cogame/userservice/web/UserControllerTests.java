@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -163,6 +164,27 @@ public class UserControllerTests {
         // then
         this.mvc.perform(request)
                 .andExpect(status().isCreated())
+                .andDo(print());
+
+    }
+    @Test
+    public void postUserWithSameEmailAndGetConflictStatusCode() throws Exception {
+
+        // given
+        String userFromFile = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
+        ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CONFLICT);
+        doReturn(r).when(userController).createUser(UserInitializr.getUser("1"));
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/users")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(userFromFile)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mvc.perform(request)
+                .andExpect(status().isConflict())
                 .andDo(print());
 
     }
