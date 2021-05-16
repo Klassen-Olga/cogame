@@ -27,7 +27,10 @@ services:
       - ./traefik.env
     labels:
       - traefik.enable=true
-      - traefik.http.routers.user-service.rule=PathPrefix(`/users`) || Path(`/certain-users`) || Path(`/greeting`)
+      - traefik.http.routers.user-service.rule=PathPrefix(`/users`)
+        || Path(`/certain-users`)
+        || Path(`/greeting`) && Host(`user`)
+        || Path(`/v2/api-docs`) && Host(`user`)
       - traefik.http.services.user-service.loadbalancer.server.port=8001
     networks:
       - cogame-network
@@ -44,6 +47,7 @@ services:
         || Path(`/events/{a-zA-Z0-9+}/users`)
         || Path(`/events/{a-zA-Z0-9+}/users/{a-zA-Z0-9+}`)
         || Path(`/greeting`) && Host(`event`)
+        || Path(`/v2/api-docs`) && Host(`event`)
       - traefik.http.services.event-service.loadbalancer.server.port=8000
     networks:
       - cogame-network
@@ -54,7 +58,10 @@ services:
       - ./traefik.env
     labels:
       - traefik.enable=true
-      - traefik.http.routers.message-service.rule=PathPrefix(`/messages`) || Path(`/events/{a-zA-Z0-9+}/messages`) || Path(`/greeting`) && Host(`message`)
+      - traefik.http.routers.message-service.rule=PathPrefix(`/messages`)
+        || Path(`/events/{a-zA-Z0-9+}/messages`)
+        || Path(`/greeting`) && Host(`message`)
+        || Path(`/v2/api-docs`) && Host(`message`)
       - traefik.http.services.message-service.loadbalancer.server.port=8002
     networks:
       - cogame-network
