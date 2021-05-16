@@ -96,6 +96,9 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<image>
+						<name>cogame/${project.artifactId}:${project.version}</name>
+					</image>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -105,10 +108,6 @@
 				<extensions>true</extensions>
 				<configuration>
 					<baseClassForTests>contract.BaseClass</baseClassForTests>
-<!--					<contractsDirectory>src/test/resources/contracts</contractsDirectory>
-					<testFramework>JUNIT</testFramework>
-					<classifier>stubs</classifier>-->
-
 				</configuration>
 
 			</plugin>

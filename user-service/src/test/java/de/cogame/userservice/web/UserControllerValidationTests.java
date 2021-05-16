@@ -89,7 +89,7 @@ public class UserControllerValidationTests {
         user.getAccount().setEmail("email");
 
         // then
-        testValidationForPostMethod("Email should have form example@ex.com", user);
+        testValidationForPostMethod("Email should be unique and have form example@ex.com", user);
 
     }
 
@@ -113,7 +113,7 @@ public class UserControllerValidationTests {
         user.setSex("Others");
 
         // then
-        testValidationForPostMethod("llowed values: MALE, FEMALE, OTHER", user);
+        testValidationForPostMethod("Allowed values: MALE, FEMALE, OTHER", user);
 
     }
 

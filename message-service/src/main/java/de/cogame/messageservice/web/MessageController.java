@@ -20,7 +20,7 @@ public class MessageController {
 
     MessageRepository messageRepository;
 
-    @GetMapping("/")
+    @GetMapping("/greeting")
     public String greeting() {
         return "Hello from message service!";
     }
