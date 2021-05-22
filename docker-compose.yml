@@ -22,6 +22,7 @@ services:
       # usage example: GET /greeting with the header Host event
       # usage example: GET /v2/api-docs with the header Host event
       - traefik.http.services.event-service.loadbalancer.server.port=8000
+      - traefik.http.routers.event-service.middlewares=cogame-auth@docker
       - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
     networks:
       - cogame-network
@@ -42,8 +43,8 @@ services:
         # usage example: GET /greeting with the header Host user
         # usage example: GET /v2/api-docs with the header Host user
       - traefik.http.services.user-service.loadbalancer.server.port=8001
-      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
       - traefik.http.routers.user-service.middlewares=cogame-auth@docker
+      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
     networks:
       - cogame-network
 
@@ -62,7 +63,9 @@ services:
         # usage example: GET /greeting with the header Host user
         # usage example: GET /v2/api-docs with the header Host message
       - traefik.http.services.message-service.loadbalancer.server.port=8002
+      - traefik.http.routers.message-service.middlewares=cogame-auth@docker
       - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
+
     networks:
       - cogame-network
 
