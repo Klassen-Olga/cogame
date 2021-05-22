@@ -2,8 +2,6 @@ version: '3.4'
 # usage example: http://localhost:81/users
 services:
 
-
-
   event-service:
     image: cogame/event-service:0.0.1-SNAPSHOT
     env_file:
@@ -24,6 +22,7 @@ services:
       # usage example: GET /greeting with the header Host event
       # usage example: GET /v2/api-docs with the header Host event
       - traefik.http.services.event-service.loadbalancer.server.port=8000
+      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
     networks:
       - cogame-network
 
@@ -43,6 +42,8 @@ services:
         # usage example: GET /greeting with the header Host user
         # usage example: GET /v2/api-docs with the header Host user
       - traefik.http.services.user-service.loadbalancer.server.port=8001
+      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
+      - traefik.http.routers.user-service.middlewares=cogame-auth@docker
     networks:
       - cogame-network
 
@@ -61,6 +62,16 @@ services:
         # usage example: GET /greeting with the header Host user
         # usage example: GET /v2/api-docs with the header Host message
       - traefik.http.services.message-service.loadbalancer.server.port=8002
+      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
+    networks:
+      - cogame-network
+
+  authentication:
+    image: cogame/authentication:0.0.1-SNAPSHOT
+    env_file:
+      - ./traefik.env
+    labels:
+      - traefik.enable=true
     networks:
       - cogame-network
 
@@ -70,6 +81,7 @@ services:
       - 27017:27017
     networks:
       - cogame-network
+
   traefik:
     # The official v2 Traefik docker image
     image: traefik:v2.4

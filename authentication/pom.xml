@@ -50,6 +50,9 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<image>
+						<name>cogame/${project.artifactId}:${project.version}</name>
+					</image>
 				</configuration>
 			</plugin>
 		</plugins>
