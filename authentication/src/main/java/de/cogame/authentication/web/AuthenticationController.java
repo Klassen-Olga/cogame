@@ -38,7 +38,6 @@ public class AuthenticationController {
                             @RequestHeader("key") String key) {
 
         String serviceHash = getServiceHash(serviceName);
-        log.info("KEY"+key);
         if (!passwordEncoder.matches(key, serviceHash)){
             throw new UnauthorizedException("Request was unauthorised");
 
