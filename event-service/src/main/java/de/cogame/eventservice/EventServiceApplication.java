@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 @EnableFeignClients
 @Import({CustomExceptionHandler.class, SecurityConfiguration.class, SwaggerConfig.class})
-@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
+@SpringBootApplication
 public class EventServiceApplication {
 
     public static void main(String[] args) {

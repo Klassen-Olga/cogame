@@ -57,8 +57,4 @@ public class BaseClass {
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
     }
 
-    @Test
-    public void test() {
-
-    }
 }

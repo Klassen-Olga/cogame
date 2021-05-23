@@ -9,12 +9,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
+ * Represents a class for authentication and authorisation management of all modules in the project
  * Overrides default security configurations of spring-boot-starter-security
  */
 @Configuration
-public class SecurityConfiguration {
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
+    /**
+     * Defines which URL-paths should be secured
+     *
+     */
+    //TODO: remove after implementing authentication
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        //allow access for all paths without any authenication
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
+    }
 
     /**
      * @return password encoder bean, which provides encryption and decryption of user's password
