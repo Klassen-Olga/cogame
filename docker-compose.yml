@@ -138,8 +138,10 @@ services:
       # usage example: GET /greeting with the header Host event
       # usage example: GET /v2/api-docs with the header Host event
       - traefik.http.services.event-service.loadbalancer.server.port=8000
-      - traefik.http.routers.event-service.middlewares=cogame-auth@docker
-      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
+      # middlewares
+      - traefik.http.routers.event-service.middlewares=eventHeaders,eventAuth
+      - traefik.http.middlewares.eventHeaders.headers.customrequestheaders.Service-Name=event
+      - traefik.http.middlewares.eventAuth.forwardauth.address=http://authentication:8003
     networks:
       - cogame-network
 
@@ -159,8 +161,10 @@ services:
         # usage example: GET /greeting with the header Host user
       # usage example: GET /v2/api-docs with the header Host user
       - traefik.http.services.user-service.loadbalancer.server.port=8001
-      - traefik.http.routers.user-service.middlewares=cogame-auth@docker
-      - traefik.http.middlewares.cogame-auth.forwardauth.address=http://authentication:8003
+      # middlewares
+      - traefik.http.routers.user-service.middlewares=userHeaders,userAuth
+      - traefik.http.middlewares.userHeaders.headers.customrequestheaders.Service-Name=user
+      - traefik.http.middlewares.userAuth.forwardauth.address=http://authentication:8003
     networks:
       - cogame-network
 
@@ -177,11 +181,12 @@ services:
         || Path(`/v2/api-docs`) && Host(`message`)
         # usage example: POST /messages
         # usage example: GET /greeting with the header Host user
-        # usage example: GET /v2/api-docs with the header Host message
+      # usage example: GET /v2/api-docs with the header Host message
       - traefik.http.services.message-service.loadbalancer.server.port=8002
-      - traefik.http.routers.message-service.middlewares=myheaders,myforwardauth
-      - traefik.http.middlewares.myheaders.headers.customrequestheaders.X-Script-Name=X-Script-Name
-      - traefik.http.middlewares.myforwardauth.forwardauth.address=http://authentication:8003
+      # middlewares
+      - traefik.http.routers.message-service.middlewares=messageHeaders,messageAuth
+      - traefik.http.middlewares.messageHeaders.headers.customrequestheaders.Service-Name=message
+      - traefik.http.middlewares.messageAuth.forwardauth.address=http://authentication:8003
 
     networks:
       - cogame-network
