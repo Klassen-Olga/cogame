@@ -15,7 +15,7 @@ import java.util.List;
 * Each request to cogame modules goes through this class
 * A request should have a "key" header with the appropriate value
 * Each service has its own authentication key
-* Traefik inserts an additional header Service-Name with the name of service
+* Traefik inserts to the request an additional header Service-Name with the name of service
 * */
 @Log4j2
 @RestController

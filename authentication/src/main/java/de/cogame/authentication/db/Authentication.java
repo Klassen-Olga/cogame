@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Map;
-
+/**
+ * Entity class for module authentication
+ * Represents a service name and service password hash pair
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

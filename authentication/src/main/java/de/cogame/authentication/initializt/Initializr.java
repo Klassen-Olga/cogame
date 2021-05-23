@@ -8,8 +8,10 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
+/*
+* class should be used in development and removed in production
+* initialises database with default passwords for request authentication
+* */
 @AllArgsConstructor
 @Component
 public class Initializr {
@@ -17,7 +19,7 @@ public class Initializr {
     AuthenticationRepository authenticationRepository;
     private PasswordEncoder passwordEncoder;
     /**
-     * removes all created messages and inserts tree messages
+     * removes all created data and inserts tree messages
      */
     @EventListener(ApplicationReadyEvent.class)
     public void go() {
