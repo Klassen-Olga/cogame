@@ -5,12 +5,13 @@ import de.cogame.globalhandler.security.SecurityConfiguration;
 import de.cogame.globalhandler.swagger.SwaggerConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 
 @EnableFeignClients
 @Import({CustomExceptionHandler.class, SecurityConfiguration.class, SwaggerConfig.class})
-@SpringBootApplication
+@SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class EventServiceApplication {
 
     public static void main(String[] args) {
