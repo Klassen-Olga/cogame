@@ -3,9 +3,51 @@
 [![Build Status](https://github.com/Klassen-Olga/cogame/workflows/build/badge.svg)](https://github.com/Klassen-Olga/cogame/actions)
 [![versionjava](https://img.shields.io/badge/jdk-11,_15-brightgreen.svg?logo=java)](https://github.com/spring-projects/spring-boot)
 
+### Required software
+- java >= v11
+- Apache Maven >= v3.6.3
+- docker >= v20.10.6
+- docker-compose >= v1.29.1
 
-A gaming community project using Microservices architecture and Spring Cloud
+### Installation
+- Start Docker Desktop
+- Install app and create images
+```sh
+# Install app
+git clone https://github.com/Klassen-Olga/cogame.git
+# Go to the folder
+cd cogame
+# Create target
+mvn clean install
+# Go to the individual modules and create images
+cd event-service
+mvn spring-boot:build-image
 
+cd ../message-service
+mvn spring-boot:build-image
+
+cd ../user-service
+mvn spring-boot:build-image
+
+# go to the root of the cogame
+cd ..
+# run docker-compose
+docker-compose up
+```
+
+If starting application in docker mode, in the header to each request should be the authentication password 
+- user-service: key 123
+- event-service: key 456
+- message-service: key 789
+
+Now you can access the traefik dashboard on http://localhost:8080
+
+Trivial app usage http://localhost:81/users 
+
+
+It is also possible to run individual modules in a dev mode.
+To access the app you should use ports from below.
+Authentication is not needed
 
 | Applications        | Ports    | 
 | ------------- |:-------------:|
