@@ -56,5 +56,9 @@ public class BaseClass {
         StandaloneMockMvcBuilder standaloneMockMvcBuilder = MockMvcBuilders.standaloneSetup(messageController);
         RestAssuredMockMvc.standaloneSetup(standaloneMockMvcBuilder);
     }
+    @Test
+    public void go(){
+
+    }
 
 }

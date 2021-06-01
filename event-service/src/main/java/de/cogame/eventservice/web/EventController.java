@@ -4,10 +4,15 @@ import de.cogame.eventservice.model.Event;
 import de.cogame.eventservice.repository.EventRepository;
 import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
+import de.cogame.globalhandler.exception.ServiceUnavailable;
 import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.globalhandler.exception.NumberOfParticipantsReached;
+import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,6 +27,7 @@ import java.util.Optional;
  * Restapi controller for event-service module
  * Manages get, post, put and delete methods
  */
+@Log4j2
 @AllArgsConstructor
 @RestController
 public class EventController {
@@ -54,9 +60,12 @@ public class EventController {
      * @return a list with messages
      */
     @GetMapping("/events/{id}/messages")
+    @CircuitBreaker(name="message-connection", fallbackMethod = "messageServiceUnreachable")
+    // while ($true) { curl http://localhost:8000/events/1/messages | Out-Host; Sleep 0.0001;  }
     public List<Message> getMessagesOfEvent(@PathVariable String id) {
 
         getEventOrThrowNotFoundException(id);
+        log.error("Message service unreachable");
         return messageServiceProxy.getMessages(id);
     }
 
@@ -144,6 +153,10 @@ public class EventController {
             throw new NotFoundException("Event with the id " + id + " does not exist");
         }
         return event.get();
+    }
+
+    public List<Message> messageServiceUnreachable(FeignException ex){
+        throw new ServiceUnavailable("Message service unreachable, please return later");
     }
 
 }

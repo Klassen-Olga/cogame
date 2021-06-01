@@ -71,7 +71,26 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                 ex.getMessage(),
                 webRequest.getDescription(false));
 
-        return new ResponseEntity(exceptionResponse, HttpStatus.CONFLICT);
+        return new ResponseEntity(exceptionResponse,  HttpStatus.CONFLICT);
+    }
+
+    /**
+     * Will be called when a service does not response
+     * e.g. event service calls message service, which is unreachable
+     *
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 403 status code and details of the exception
+     */
+    @ExceptionHandler({ServiceUnavailable.class})
+    public final ResponseEntity<Object> unreachable
+    (ServiceUnavailable ex, WebRequest webRequest) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(),
+                ex.getMessage(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse,  HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     /**
