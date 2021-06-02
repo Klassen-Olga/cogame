@@ -35,19 +35,22 @@ cd ..
 docker-compose up
 ```
 
-If starting application in docker mode, in the header to each request should be the authentication password 
-- user-service: key 123
-- event-service: key 456
-- message-service: key 789
-
-Now you can access the traefik dashboard on http://localhost:8080
-
-Trivial app usage http://localhost:81/users 
+When running the app in docker mode, each request must have an authentication password in the header 
+- user-service:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key 123
+- event-service:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key 456
+- message-service:&nbsp;&nbsp;key 789
 
 
-It is also possible to run individual modules in a dev mode.
-To access the app you should use ports from below.
-Authentication is not needed
+
+| Access        | URL    |
+| ------------- |:-------------:|
+| traefik dashboard     | http://localhost:8080 |
+| app      | http://localhost:81      |
+| example get users | http://localhost:81/users      |
+
+It is also possible to run individual modules in dev mode.
+To access the app you should use ports listed below.
+Authentication is not needed.
 
 | Applications        | Ports    | 
 | ------------- |:-------------:|
