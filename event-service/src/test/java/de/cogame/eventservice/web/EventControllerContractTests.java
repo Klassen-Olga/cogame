@@ -1,13 +1,20 @@
 package de.cogame.eventservice.web;
 
 
+import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * Ent-to-end test class between message-service and event-service
@@ -42,7 +49,6 @@ class EventControllerContractTests {
         assertThat(messages.get(1).getText()).isEqualTo("Great Event, Bom");
         assertThat(messages.get(1).getCreatedAt()).isEqualTo(LocalDateTime.of(2023, 01, 01, 13, 00));
 
-    }
-*/
+    }*/
 
 }

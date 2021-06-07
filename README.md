@@ -56,5 +56,4 @@ Authentication is not needed.
 | ------------- |:-------------:|
 | Event Service     | 8000 |
 | User Service      | 8001      |
-| Message Service | 8002      | 
-
+| Message Service | 8002      |
