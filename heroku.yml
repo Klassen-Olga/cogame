@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: user-service/Dockerfile
+run:
+  web: java -Dserver.port=$PORT $JAVA_OPTS -jar  user-service/target/user-service-0.0.1-SNAPSHOT.jar

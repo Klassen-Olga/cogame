@@ -1,6 +1,7 @@
 package de.cogame.messageservice.web;
 
 import de.cogame.messageservice.initializr.MessageInitializr;
+import de.cogame.messageservice.repository.MessageRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class MessageControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private MessageController messageController;
+    private MessageRepository messageRepository;
+
 
     @Value("classpath:data/messages.json")
     Resource messagesFile;
@@ -49,7 +51,7 @@ public class MessageControllerTests {
     @Test
     public void shouldReturnMessagesOfEvent1() throws Exception {
 
-        given(messageController.getMessages("1")).willReturn(MessageInitializr.getMessages());
+        given(messageRepository.findByEventId("1")).willReturn(MessageInitializr.getMessages());
         String messages = StreamUtils.copyToString(messagesFile.getInputStream(), Charset.defaultCharset());
 
         this.mockMvc.perform(get("/events/1/messages"))
@@ -64,8 +66,7 @@ public class MessageControllerTests {
 
         // given
         String message = StreamUtils.copyToString(messageFile.getInputStream(), Charset.defaultCharset());
-        ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CREATED);
-        doReturn(r).when(messageController).createMessages(any());
+        doReturn(MessageInitializr.getMessages().get(0)).when(messageRepository).save(any());
 
         // when
         RequestBuilder request = MockMvcRequestBuilders

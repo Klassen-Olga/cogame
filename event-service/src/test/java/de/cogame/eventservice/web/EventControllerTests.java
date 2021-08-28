@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import de.cogame.eventservice.initializr.EventInitializr;
 import de.cogame.eventservice.model.Event;
+import de.cogame.eventservice.repository.EventRepository;
+import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
 import de.cogame.globalhandler.exception.NotFoundException;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
@@ -52,7 +54,9 @@ public class EventControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    EventController eventController;
+    EventRepository eventRepository;
+    @MockBean
+    MessageServiceProxy messageServiceProxy;
 
     @Value("classpath:data/events.json")
     Resource eventsFile;
@@ -65,8 +69,6 @@ public class EventControllerTests {
     @Test
     public void returnsHelloFromEventService() throws Exception {
 
-        // when
-        given(this.eventController.greeting()).willReturn("Hello from event service!");
 
         // then
         this.mvc.perform(get("/greeting"))
@@ -75,7 +77,6 @@ public class EventControllerTests {
                 .andExpect(content().string("Hello from event service!"));
 
     }
-
     @Test
     public void getEventsShouldReturn2Events() throws Exception {
         Event event = EventInitializr.getEvent("1");
@@ -86,7 +87,7 @@ public class EventControllerTests {
         events.add(event1);
 
         //when
-        given(this.eventController.getEvents()).willReturn(events);
+        given(this.eventRepository.findAll()).willReturn(events);
 
 
         //then
@@ -96,12 +97,11 @@ public class EventControllerTests {
                 .andExpect(content().json(fileEvents));
 
     }
-
     @Test
     public void getEventsShouldReturnEmptyList() throws Exception {
 
         //when
-        given(this.eventController.getEvents()).willReturn(new ArrayList<>());
+        given(this.eventRepository.findAll()).willReturn(new ArrayList<>());
 
 
         //then
@@ -111,12 +111,11 @@ public class EventControllerTests {
                 .andExpect(content().json("[]"));
 
     }
-
     @Test
     public void getEventShouldThrowNotFoundException() throws Exception {
 
         //when
-        given(this.eventController.getEvent("11")).willThrow(new NotFoundException("Event with the id 11 does not exist"));
+        given(this.eventRepository.findById("11")).willThrow(new NotFoundException("Event with the id 11 does not exist"));
 
 
         //then
@@ -127,7 +126,6 @@ public class EventControllerTests {
 
 
     }
-
     @Test
     public void getUsersOfEventShouldReturn2Users() throws Exception {
         Event event = EventInitializr.getEvent("1");
@@ -135,7 +133,7 @@ public class EventControllerTests {
 
 
         //when
-        given(this.eventController.getUsersOfEvent("1")).willReturn(event.getParticipants());
+        given(this.eventRepository.findById("1")).willReturn(java.util.Optional.of(EventInitializr.getEvent("1")));
 
         //then
         this.mvc.perform(get("/events/1/users").accept(MediaType.APPLICATION_JSON))
@@ -150,8 +148,7 @@ public class EventControllerTests {
 
         // given
         String eventFromFile = StreamUtils.copyToString(eventFile.getInputStream(), Charset.defaultCharset());
-        ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CREATED);
-        doReturn(r).when(eventController).createEvent(any());
+        doReturn(EventInitializr.getEvent("1")).when(eventRepository).save(any());
 
         // when
         RequestBuilder request = MockMvcRequestBuilders
@@ -166,17 +163,11 @@ public class EventControllerTests {
                 .andDo(print());
 
     }
-
     @Test
     public void deleteExistingEventWillReturnOk() throws Exception {
 
         // given
-        doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                return null;
-            }
-        }).when(eventController).deleteEvent("1");
+        doReturn(java.util.Optional.of(EventInitializr.getEvent("1"))).when(eventRepository).findById("1");
 
 
         // when
@@ -190,12 +181,11 @@ public class EventControllerTests {
                 .andDo(print());
 
     }
-
     @Test
     public void deleteNotExistingEventWillThrowNotFoundException() throws Exception {
 
         // given
-        doThrow(NotFoundException.class).when(eventController).deleteEvent("222");
+        doThrow(NotFoundException.class).when(eventRepository).deleteById("222");
 
 
         // when
@@ -206,35 +196,6 @@ public class EventControllerTests {
         // then
         this.mvc.perform(request)
                 .andExpect(status().isNotFound())
-                .andDo(print());
-
-    }
-
-    @Test
-    public void addUserWillReturn200StatusCode() throws Exception {
-
-        Map<String, String> user = new HashMap<>();
-        user.put("id", "12");
-        user.put("name", "Truli");
-        // given
-        doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                return null;
-            }
-        }).when(eventController).addUser(user, "1");
-
-        String userJson = ow.writeValueAsString(user);
-        // when
-        RequestBuilder request = MockMvcRequestBuilders
-                .put("/events/1/user")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(userJson)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        this.mvc.perform(request)
-                .andExpect(status().isOk())
                 .andDo(print());
 
     }

@@ -3,6 +3,7 @@ package de.cogame.userservice.web;
 import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.userservice.initializr.UserInitializr;
 import de.cogame.userservice.model.User;
+import de.cogame.userservice.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,7 +52,7 @@ public class UserControllerTests {
     private MockMvc mvc;
 
     @MockBean
-    UserController userController;
+    UserRepository userRepository;
 
     @Value("classpath:data/users.json")
     Resource usersFile;
@@ -63,9 +64,6 @@ public class UserControllerTests {
     @Test
     public void returnsHelloFromUserService() throws Exception {
 
-        // when
-        given(this.userController.greeting1()).willReturn("Hello from user-service");
-
         // then
         this.mvc.perform(get("/greeting"))
                 .andDo(print())
@@ -73,15 +71,13 @@ public class UserControllerTests {
                 .andExpect(content().string("Hello from user-service"));
 
     }
-
-
     @Test
     public void getUsersShouldReturnUsers() throws Exception {
         User user = UserInitializr.getUser("1");
         String users = StreamUtils.copyToString(usersFile.getInputStream(), Charset.defaultCharset());
 
         //when
-        given(this.userController.getUsers()).willReturn(Collections.singletonList(user));
+        given(this.userRepository.findAll()).willReturn(Collections.singletonList(user));
 
 
         //then
@@ -91,12 +87,11 @@ public class UserControllerTests {
                 .andExpect(content().json(users));
 
     }
-
     @Test
     public void getNotExistingUserWillThrowNotFoundException() throws Exception {
 
         // given
-        doThrow(NotFoundException.class).when(userController).getUser("ulala");
+        doThrow(NotFoundException.class).when(userRepository).findById("ulala");
 
         // then
         this.mvc.perform(get("/users/ulala").accept(MediaType.APPLICATION_JSON))
@@ -104,14 +99,13 @@ public class UserControllerTests {
                 .andExpect(status().isNotFound());
 
     }
-
     @Test
     public void getUser1ShouldReturnUsers1() throws Exception {
         User user = UserInitializr.getUser("1");
         String users = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
 
         // when
-        given(this.userController.getUser("1")).willReturn(user);
+        given(this.userRepository.findById("1")).willReturn(java.util.Optional.of(user));
 
         //then
         this.mvc.perform(get("/users/1").accept(MediaType.APPLICATION_JSON))
@@ -132,7 +126,7 @@ public class UserControllerTests {
         users.add(UserInitializr.getUser("1"));
 
         // when
-        given(this.userController.getCertainUsers(usersId)).willReturn(users);
+        given(this.userRepository.getAllByIdIn(usersId)).willReturn(users);
 
         RequestBuilder request = MockMvcRequestBuilders
                 .get("/certain-users")
@@ -145,14 +139,15 @@ public class UserControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(content().json(usersFromFile));
     }
-
     @Test
     public void postUserAndGetCreatedStatusCode() throws Exception {
 
         // given
         String userFromFile = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
         ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CREATED);
-        doReturn(r).when(userController).createUser(any());
+        User user = UserInitializr.getUser("1");
+
+        doReturn(user).when(userRepository).save(any());
 
         // when
         RequestBuilder request = MockMvcRequestBuilders
@@ -167,27 +162,6 @@ public class UserControllerTests {
                 .andDo(print());
 
     }
-    @Test
-    public void postUserWithSameEmailAndGetConflictStatusCode() throws Exception {
-
-        // given
-        String userFromFile = StreamUtils.copyToString(userFile.getInputStream(), Charset.defaultCharset());
-        ResponseEntity<Object> r = new ResponseEntity<>(HttpStatus.CONFLICT);
-        doReturn(r).when(userController).createUser(UserInitializr.getUser("1"));
-
-        // when
-        RequestBuilder request = MockMvcRequestBuilders
-                .post("/users")
-                .accept(MediaType.APPLICATION_JSON)
-                .content(userFromFile)
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        this.mvc.perform(request)
-                .andExpect(status().isConflict())
-                .andDo(print());
-
-    }
 
     @Test
     public void deleteExistingUserWillReturnOk() throws Exception {
@@ -198,7 +172,8 @@ public class UserControllerTests {
                 Object[] args = invocation.getArguments();
                 return null;
             }
-        }).when(userController).deleteUser("1");
+        }).when(userRepository).deleteById("1");
+        doReturn(java.util.Optional.of(UserInitializr.getUser("1"))).when(userRepository).findById("1");
 
         // when
         RequestBuilder request = MockMvcRequestBuilders
@@ -211,12 +186,11 @@ public class UserControllerTests {
                 .andDo(print());
 
     }
-
     @Test
     public void deleteNotExistingUserWillThrowNotFoundException() throws Exception {
 
         // given
-        doThrow(NotFoundException.class).when(userController).deleteUser("blabla");
+        doThrow(NotFoundException.class).when(userRepository).deleteById("blabla");
 
         // when
         RequestBuilder request = MockMvcRequestBuilders
