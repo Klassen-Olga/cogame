@@ -61,7 +61,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidNameWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.setName("");
 
         //then
@@ -73,7 +73,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidDateOfBirthWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.setDateOdBirth(LocalDate.of(2022, 1,1));
 
         // then
@@ -85,7 +85,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidEmailWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.getAccount().setEmail("email");
 
         // then
@@ -97,7 +97,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidOccupationWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.getOccupation().setOccupationName("");
 
         // then
@@ -109,7 +109,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidSexTypeWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.setSex("Others");
 
         // then
@@ -121,7 +121,7 @@ public class UserControllerValidationTests {
     public void postUserWithInvalidPlaceOfLivingWillReturn400() throws Exception {
 
         // when
-        User user= UserInitializr.getUser("");
+        User user= UserInitializr.getUser("", "Albert");
         user.getPlaceOfLiving().setCity("");
 
         // then

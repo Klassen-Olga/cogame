@@ -44,7 +44,7 @@ public class Event {
     // includes the creator
     @Min(value = AttributeDescription.participantsNumberMin, message = AttributeDescription.participantsNumber)
     @ApiModelProperty(notes = AttributeDescription.participantsNumber)
-    private int participantsNumber;
+    private int maxParticipantsNumber;
 
     @NotEmpty(message = AttributeDescription.creatorUserId)
     @ApiModelProperty(notes = AttributeDescription.creatorUserId)

@@ -19,12 +19,12 @@
         "name": "Twister"
       }
     ],
-    "creatorUserId": "608873cd2e22d5088f7cdb5d",
+    "creatorUserId": "1",
     "participants": {
       "1": "Albert",
       "2": "Cup"
     },
-    "participantsNumber": 4,
+    "maxParticipantsNumber": 4,
     "tools": [
       {
         "toolName": "Monopoly game",
@@ -57,12 +57,12 @@
         "name": "Twister"
       }
     ],
-    "creatorUserId": "608873cd2e22d5088f7cdb5d",
+    "creatorUserId": "1",
     "participants": {
       "1": "Albert",
       "2": "Cup"
     },
-    "participantsNumber": 4,
+    "maxParticipantsNumber": 4,
     "tools": [
       {
         "toolName": "Monopoly game",

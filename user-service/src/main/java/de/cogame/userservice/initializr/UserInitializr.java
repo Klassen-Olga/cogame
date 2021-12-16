@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class UserInitializr {
 
-    public static User getUser(String id) {
+    public static User getUser(String id, String name) {
         List<String> books = new LinkedList<>();
 
         books.add("book1");
@@ -40,13 +40,13 @@ public class UserInitializr {
         music.add("music3");
 
         return new User(id,
-                "Albert",
+                name,
                 LocalDate.of(1996, 4, 5),
                 "FEMALE",
                 "19083209",
                 new PlaceOfLiving("Berlin", "Germany"),
                 new Occupation("Student", "University of applied science"),
-                new Account("mail@mail.com", "12345678"),
+                new Account( name+"@mail.com", "12345678"),
                 books, movies, games, music);
 
     }

@@ -1,7 +1,13 @@
 package de.cogame.messageservice.web;
 
+import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.messageservice.initializr.MessageInitializr;
 import de.cogame.messageservice.repository.MessageRepository;
+import de.cogame.messageservice.service.MessageService;
+import de.cogame.messageservice.web.eventproxy.Event;
+import de.cogame.messageservice.web.eventproxy.EventServiceProxy;
+import de.cogame.messageservice.web.userproxy.User;
+import de.cogame.messageservice.web.userproxy.UserServiceProxy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +46,12 @@ public class MessageControllerTests {
     private MockMvc mockMvc;
 
     @MockBean
-    private MessageRepository messageRepository;
+    private MessageService messageService;
 
+    @MockBean
+    private UserServiceProxy userServiceProxy;
+    @MockBean
+    private EventServiceProxy eventServiceProxy;
 
     @Value("classpath:data/messages.json")
     Resource messagesFile;
@@ -51,7 +61,7 @@ public class MessageControllerTests {
     @Test
     public void shouldReturnMessagesOfEvent1() throws Exception {
 
-        given(messageRepository.findByEventId("1")).willReturn(MessageInitializr.getMessages());
+        given(messageService.findByEventId("1")).willReturn(MessageInitializr.getMessages());
         String messages = StreamUtils.copyToString(messagesFile.getInputStream(), Charset.defaultCharset());
 
         this.mockMvc.perform(get("/events/1/messages"))
@@ -66,7 +76,10 @@ public class MessageControllerTests {
 
         // given
         String message = StreamUtils.copyToString(messageFile.getInputStream(), Charset.defaultCharset());
-        doReturn(MessageInitializr.getMessages().get(0)).when(messageRepository).save(any());
+        given(eventServiceProxy.existsEvent("1")).willReturn(new Event("1"));
+        given(userServiceProxy.existsUser("1")).willReturn(new User("1"));
+        given(eventServiceProxy.participatesUser("1", "1")).willReturn(true);
+        doReturn(MessageInitializr.getMessages().get(0)).when(messageService).save(any());
 
         // when
         RequestBuilder request = MockMvcRequestBuilders
@@ -78,6 +91,75 @@ public class MessageControllerTests {
         // then
         this.mockMvc.perform(request)
                 .andExpect(status().isCreated())
+                .andDo(print());
+
+    }
+    @Test
+    public void postMessagesWithInvalidEventWillThrowNotFound() throws Exception {
+
+        // given
+        String message = StreamUtils.copyToString(messageFile.getInputStream(), Charset.defaultCharset());
+        given(eventServiceProxy.existsEvent("1")).willThrow(new NotFoundException(""));
+        given(userServiceProxy.existsUser("1")).willReturn(new User("1"));
+        given(eventServiceProxy.participatesUser("1", "1")).willReturn(true);
+        doReturn(MessageInitializr.getMessages().get(0)).when(messageService).save(any());
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/messages")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(message)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mockMvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+    @Test
+    public void postMessagesWithInvalidUserWillThrowNotFound() throws Exception {
+
+        // given
+        String message = StreamUtils.copyToString(messageFile.getInputStream(), Charset.defaultCharset());
+        given(eventServiceProxy.existsEvent("1")).willReturn(new Event("1"));
+        given(userServiceProxy.existsUser("1")).willThrow(new NotFoundException(""));
+        given(eventServiceProxy.participatesUser("1", "1")).willReturn(true);
+        doReturn(MessageInitializr.getMessages().get(0)).when(messageService).save(any());
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/messages")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(message)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mockMvc.perform(request)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+
+    }
+    @Test
+    public void postMessagesWithUserWhoNotParticipatesInEvent() throws Exception {
+
+        // given
+        String message = StreamUtils.copyToString(messageFile.getInputStream(), Charset.defaultCharset());
+        given(eventServiceProxy.existsEvent("1")).willReturn(new Event("1"));
+        given(userServiceProxy.existsUser("1")).willReturn(new User("1"));
+        given(eventServiceProxy.participatesUser("1", "1")).willReturn(false);
+        doReturn(MessageInitializr.getMessages().get(0)).when(messageService).save(any());
+
+        // when
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/messages")
+                .accept(MediaType.APPLICATION_JSON)
+                .content(message)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        this.mockMvc.perform(request)
+                .andExpect(status().isConflict())
                 .andDo(print());
 
     }

@@ -3,7 +3,10 @@ package contract;
 import de.cogame.messageservice.MessageServiceApplication;
 import de.cogame.messageservice.model.Message;
 import de.cogame.messageservice.repository.MessageRepository;
+import de.cogame.messageservice.service.MessageService;
 import de.cogame.messageservice.web.MessageController;
+import de.cogame.messageservice.web.eventproxy.EventServiceProxy;
+import de.cogame.messageservice.web.userproxy.UserServiceProxy;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +37,11 @@ public class BaseClass {
     private MessageController messageController;
 
     @MockBean
-    private MessageRepository messageRepository;
+    private MessageService messageService;
+    @MockBean
+    private UserServiceProxy userServiceProxy;
+    @MockBean
+    private EventServiceProxy eventServiceProxy;
 
     /*
      *
@@ -49,7 +56,7 @@ public class BaseClass {
         List<Message> messages = new ArrayList<>();
         messages.add(new Message("21", "21", "Dom", "20", "Great Event, Dom", LocalDateTime.of(2023, 01, 01, 14, 00)));
         messages.add(new Message("22", "22", "Bom", "20", "Great Event, Bom", LocalDateTime.of(2023, 01, 01, 13, 00)));
-        when(messageRepository.findByEventId("20"))
+        when(messageService.findByEventId("20"))
                 .thenReturn(messages);
 
 

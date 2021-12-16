@@ -25,15 +25,14 @@ public class UserRepositoryMockitoTests {
     @Test
     public void getUserById1ReturnsAlbert() {
 
-        User user = UserInitializr.getUser("1");
+        User user = UserInitializr.getUser("1", "albert");
 
         given(this.userRepository.findById("1")).willReturn(java.util.Optional.of(user));
 
         Optional<User> user1 = userRepository.findById("1");
         if (user1.isPresent()) {
-            assertThat(user1.get().getName()).isEqualTo("Albert");
-            assertThat(user1.get().getAccount().getEmail()).isEqualTo("mail@mail.com");
-            assertThat(user1.get().getName()).isEqualTo("Albert");
+            assertThat(user1.get().getName()).isEqualTo("albert");
+            assertThat(user1.get().getAccount().getEmail()).isEqualTo("albert@mail.com");
             assertThat(user1.get().getDateOdBirth()).isEqualTo(LocalDate.of(1996, 4, 5));
         }
     }

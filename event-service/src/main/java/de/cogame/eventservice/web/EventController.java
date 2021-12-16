@@ -1,16 +1,15 @@
 package de.cogame.eventservice.web;
 
 import de.cogame.eventservice.model.Event;
-import de.cogame.eventservice.repository.EventRepository;
+import de.cogame.eventservice.service.EventService;
 import de.cogame.eventservice.web.messageproxy.Message;
 import de.cogame.eventservice.web.messageproxy.MessageServiceProxy;
+import de.cogame.eventservice.web.userproxy.UserServiceProxy;
+import de.cogame.globalhandler.exception.EventConstraintViolation;
 import de.cogame.globalhandler.exception.ServiceUnavailable;
-import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.globalhandler.exception.NumberOfParticipantsReached;
 import feign.FeignException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
-import io.swagger.annotations.ApiParam;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Restapi controller for event-service module
@@ -32,25 +30,20 @@ import java.util.Optional;
 @RestController
 public class EventController {
 
-    EventRepository eventRepository;
+    EventService eventService;
     MessageServiceProxy messageServiceProxy;
+    UserServiceProxy userServiceProxy;
 
-
-    @GetMapping("/greeting")
-    public String greeting() {
-
-        return "Hello from event service!";
-    }
 
     @GetMapping("/events")
     public List<Event> getEvents() {
-        return eventRepository.findAll();
+        return eventService.findAll();
     }
 
     @GetMapping("/events/{id}")
     public Event getEvent(@PathVariable String id) {
 
-        return getEventOrThrowNotFoundException(id);
+        return eventService.getEvent(id);
     }
 
     /**
@@ -60,12 +53,11 @@ public class EventController {
      * @return a list with messages
      */
     @GetMapping("/events/{id}/messages")
-    @CircuitBreaker(name="message-connection", fallbackMethod = "messageServiceUnreachable")
+    @CircuitBreaker(name = "feign-connection", fallbackMethod = "serviceUnreachable")
     // while ($true) { curl http://localhost:8000/events/1/messages | Out-Host; Sleep 0.0001;  }
     public List<Message> getMessagesOfEvent(@PathVariable String id) {
 
-        getEventOrThrowNotFoundException(id);
-        log.error("Message service unreachable");
+        eventService.getEvent(id);
         return messageServiceProxy.getMessages(id);
     }
 
@@ -76,7 +68,7 @@ public class EventController {
     @GetMapping("/events/{id}/users")
     public Map<String, String> getUsersOfEvent(@PathVariable String id) {
 
-        Event event = getEventOrThrowNotFoundException(id);
+        Event event = eventService.getEvent(id);
         return event.getParticipants();
     }
 
@@ -84,9 +76,12 @@ public class EventController {
      * Saves an event into the database and returns 201 created status code
      */
     @PostMapping("/events")
+    @CircuitBreaker(name = "feign-connection", fallbackMethod = "serviceUnreachable")
     public ResponseEntity<Object> createEvent(@Valid @RequestBody Event event) {
+        //user existence check
+        userServiceProxy.existsUser(event.getCreatorUserId());
 
-        Event newEvent = eventRepository.save(event);
+        Event newEvent = eventService.save(event);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .buildAndExpand(newEvent.getId())
@@ -95,19 +90,21 @@ public class EventController {
     }
 
     @DeleteMapping("/events/{id}")
-    public void deleteEvent(@PathVariable String id) {
-
-        getEventOrThrowNotFoundException(id);
-        eventRepository.deleteById(id);
+    @CircuitBreaker(name = "feign-connection", fallbackMethod = "serviceUnreachable")
+    public void deleteEvent(@PathVariable String id, @RequestParam String creatorId) {
+        // check if event exists
+        Event event= getEvent(id);
+        //check if creator is creator of event
+        if (!event.getCreatorUserId().equals(creatorId)) {
+            throw new EventConstraintViolation("User with id " + creatorId + " is not the creator of event with id " + id);
+        }
+        // delete messages
+        messageServiceProxy.deleteMessages(id);
+        // delete event
+        eventService.deleteById(id);
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @PutMapping("/events")
-    public void changeEvent(@Valid @RequestBody Event event) {
-
-        getEventOrThrowNotFoundException(event.getId());
-        eventRepository.save(event);
-
-    }
 
     /*
      * Adds an user to the existing event
@@ -115,47 +112,80 @@ public class EventController {
      *
      * */
     @PutMapping("/events/{eventId}/users")
-    public void addUser(@Valid @RequestBody @ApiParam(
-            value = "Request format {\"id\":\"1\", \"name\":\"myName\"}")
-                                Map<String, String> user, @PathVariable String eventId) {
+    @CircuitBreaker(name = "feign-connection", fallbackMethod = "serviceUnreachable")
+    public void addUser(@Valid @RequestParam
+                                String userId, @RequestParam String userName, @PathVariable String eventId) {
 
-        Event event = getEventOrThrowNotFoundException(eventId);
-        if (user.get("id").isBlank()) {
-            throw new NotFoundException("Event with id " + eventId + " does not exist");
+        //check if event exists
+        Event event = eventService.getEvent(eventId);
+
+        //check if user exists
+        userServiceProxy.existsUser(userId);
+        //check if user already participates
+        if (event.getParticipants().get(userId)!=null) {
+            throw new EventConstraintViolation("This user already participates in this event");
         }
-        int participantsNumber = event.getParticipantsNumber();
-        if (participantsNumber == event.getParticipants().size()) {
-            throw new NumberOfParticipantsReached("Maximum number of participants " + participantsNumber + " reached");
+        //check if participant number not reached
+        if (event.getMaxParticipantsNumber()==(event.getParticipants().size())) {
+            throw new NumberOfParticipantsReached("Maximum number of participants " + event.getMaxParticipantsNumber() + " reached");
         }
-        event.getParticipants().put(user.get("id"), user.get("name"));
-        eventRepository.save(event);
+        //add new participant to event
+        event.getParticipants().put(userId, userName);
+
+        //save
+        eventService.save(event);
     }
 
     /*
      * Removes an user from the existing event
      *
      * */
+    @CircuitBreaker(name = "feign-connection", fallbackMethod = "serviceUnreachable")
     @PutMapping("/events/{eventId}/users/{userId}")
     public void deleteUser(@PathVariable String userId, @PathVariable String eventId) {
 
-        Event event = getEventOrThrowNotFoundException(eventId);
-        Map<String, String> participants = event.getParticipants();
-        String exists=participants.remove(userId);
-        if (exists==null){
-            throw new NotFoundException("User with the id " +userId+" does not exist in event with the id "+eventId);
+        //check if event exists
+        Event event = eventService.getEvent(eventId);
+
+        //check if user exists
+        userServiceProxy.existsUser(userId);
+
+        //check if user to remove is not creator
+        if (userId.equals(event.getCreatorUserId())) {
+            throw new EventConstraintViolation("Creator of event can not be deleted");
         }
-        eventRepository.save(event);
+        //check if user participates in event         //remove participant from event
+        if (event.getParticipants().remove(userId)==null) {
+            throw new EventConstraintViolation("User with is " + userId + " does not participates in event with id " + eventId);
+        }
+
+        //update event
+        eventService.save(event);
     }
 
-    public Event getEventOrThrowNotFoundException(String id) {
-        Optional<Event> event = eventRepository.findById(id);
-        if (!event.isPresent()) {
-            throw new NotFoundException("Event with the id " + id + " does not exist");
-        }
-        return event.get();
+    @GetMapping("/events/users/{id}/eventsTime")
+    List<LocalDateTime> getEventsDateTimes(@PathVariable String id) {
+        List<LocalDateTime> localDateTimes = new LinkedList<>();
+        eventService.findAllByCreatorUserId(id).forEach(event -> localDateTimes.add(event.getDateTimeOfEvent()));
+        return localDateTimes;
     }
 
-    public List<Message> messageServiceUnreachable(FeignException ex){
+    @DeleteMapping("/events/users/{userId}/fromAllEvents")
+    void deleteUserFromEvents(@PathVariable String userId) {
+        List<Event> all = eventService.findAll();
+        all.forEach(event -> {
+                    event.getParticipants().remove(userId);
+                    eventService.save(event);
+                }
+        );
+    }
+
+    @GetMapping("/events/{eventId}/users/{userId}/participates")
+    boolean participatesUser(@PathVariable String userId,@PathVariable String eventId){
+        Event event = eventService.getEvent(eventId);
+        return event.getParticipants().get(userId) != null;
+    }
+    public List<Message> serviceUnreachable(FeignException ex) {
         throw new ServiceUnavailable("Message service unreachable, please return later");
     }
 

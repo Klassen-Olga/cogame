@@ -1,10 +1,12 @@
 package de.cogame.userservice.web;
 
 
+import de.cogame.globalhandler.exception.EventConstraintViolation;
 import de.cogame.globalhandler.exception.NotFoundException;
 import de.cogame.globalhandler.exception.UniqueKeyViolation;
 import de.cogame.userservice.model.User;
-import de.cogame.userservice.repository.UserRepository;
+import de.cogame.userservice.service.UserService;
+import de.cogame.userservice.web.eventproxy.EventServiceProxy;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 /**
@@ -25,42 +28,24 @@ import java.util.Optional;
 @Log4j2
 public class UserController {
 
-    UserRepository userRepository;
+    UserService userService;
     PasswordEncoder passwordEncoder;
+    EventServiceProxy eventServiceProxy;
 
 
-    @GetMapping("/greeting")
-    public String greeting1() {
-        return "Hello from user-service";
-    }
 
     @GetMapping("/users")
     public List<User> getUsers() {
 
-        return userRepository.findAll();
+        return userService.getAll();
     }
 
-    /**
-     * Used to get all users objects based on the list of the ids
-     * @param ids list of ids
-     * @return list of users
-     */
-    @GetMapping("/certain-users")
-    public List<User> getCertainUsers(@RequestBody List<String> ids) {
-
-        return userRepository.getAllByIdIn(ids);
-    }
 
     @GetMapping("/users/{id}")
     public User getUser(@PathVariable String id) {
 
-        Optional<User> user = userRepository.findById(id);
 
-        if (!user.isPresent()) {
-            throw new NotFoundException("User with id " + id + " does not exist");
-        }
-
-        return user.get();
+        return userService.getUser(id);
 
     }
 
@@ -71,7 +56,7 @@ public class UserController {
         user.getAccount().setPassword(passwordEncoder.encode(user.getAccount().getPassword()));
 
         try {
-            User savedUser = userRepository.save(user);
+            User savedUser = userService.save(user);
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
@@ -93,24 +78,17 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable String id) {
 
-        Optional<User> user = userRepository.findById(id);
-
-        if (!user.isPresent()) {
-            throw new NotFoundException("User with id " + id + " does not exist");
+        // check if user exists
+        User user = userService.getUser(id);
+        //check if user has event created
+        List<LocalDateTime> eventsDatesTimes=eventServiceProxy.getUsersEventDateTimes(id);
+        if (userService.areEventsInFuture(eventsDatesTimes)){
+            throw new EventConstraintViolation("An user with active created events can not be deleted");
         }
-        userRepository.deleteById(id);
-
-    }
-
-    @PutMapping("/users/{id}")
-    public void updateUser(@RequestBody User user) {
-
-        if (userRepository.findById(user.getId()).isEmpty()) {
-            throw new NotFoundException("User with id " + user.getId() + " does not exist");
-        }
-
-        userRepository.save(user);
-
+        //delete user from all events
+        eventServiceProxy.deleteUserFromEvents(id);
+        // delete user
+        userService.delete(user);
     }
 
 }

@@ -33,7 +33,7 @@ public class UserRepositoryDataTests {
     public void before(){
 
         userRepository.deleteAll();
-        this.userRepository.save(UserInitializr.getUser("1"));
+        this.userRepository.save(UserInitializr.getUser("1", "albert"));
 
 
     }
@@ -48,9 +48,9 @@ public class UserRepositoryDataTests {
 
         Optional<User> user = userRepository.findById("1");
         if (user.isPresent()){
-            assertThat(user.get().getName()).isEqualTo("Albert");
+            assertThat(user.get().getName()).isEqualTo("albert");
             assertThat(user.get().getDateOdBirth()).isEqualTo(LocalDate.of(1996, 04,05));
-            assertThat(user.get().getAccount().getEmail()).isEqualTo("mail@mail.com");
+            assertThat(user.get().getAccount().getEmail()).isEqualTo("albert@mail.com");
             assertThat(user.get().getAccount().getPassword()).isEqualTo("12345678");
             assertThat(user.get().getPlaceOfLiving().getCity()).isEqualTo("Berlin");
         }

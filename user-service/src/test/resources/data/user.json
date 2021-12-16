@@ -1,6 +1,6 @@
 {
   "id": "1",
-  "name": "Albert",
+  "name": "albert",
   "dateOdBirth": "1996-04-05",
   "sex": "FEMALE",
   "placeOfLiving": {
@@ -32,7 +32,7 @@
     "music3"
   ],
   "account": {
-    "email": "mail@mail.com",
+    "email": "albert@mail.com",
     "password": "12345678"
   }
 }

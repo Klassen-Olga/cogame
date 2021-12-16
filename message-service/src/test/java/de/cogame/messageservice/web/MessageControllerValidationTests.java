@@ -38,7 +38,7 @@ public class MessageControllerValidationTests {
     MockMvc mockMvc;
 
     @MockBean
-    private MessageController messageController;
+    MessageController messageController;
 
     @Before
     public void before() {

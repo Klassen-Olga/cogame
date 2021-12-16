@@ -24,9 +24,12 @@ public class Initializr {
     @EventListener(ApplicationReadyEvent.class)
     public void go() {
 
-        User user = UserInitializr.getUser("1");
+        User user = UserInitializr.getUser("1", "Albert");
+        User user1 = UserInitializr.getUser("2", "Cup");
+
         userRepository.deleteAll();
         this.userRepository.save(user);
+        this.userRepository.save(user1);
     }
 
 

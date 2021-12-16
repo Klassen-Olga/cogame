@@ -10,11 +10,13 @@ services:
       - traefik.enable=true
       - traefik.http.routers.event-service.rule=
         PathPrefix(`/events`)
+        || Path(`/events/users/{a-zA-Z0-9+}/eventsTime`)
+        || Path(`/events/users/{a-zA-Z0-9+}/fromAllEvents`)
         || Path(`/events/{a-zA-Z0-9+}/messages`)
         || Path(`/events/{a-zA-Z0-9+}/users`)
         || Path(`/events/{a-zA-Z0-9+}/users/{a-zA-Z0-9+}`)
-        || Path(`/greeting`) && Host(`event`)
         || Path(`/v2/api-docs`) && Host(`event`)
+        || Path(`/events/{a-zA-Z0-9+}/users/{a-zA-Z0-9+}/participates`)
       # usage example: GET /events, /events/1; POST /events
       # usage example: GET /events/1/messages (makes web request to message-service)
       # usage example: PUT /events/1/users (adds user)
@@ -61,7 +63,6 @@ services:
       - traefik.enable=true
       - traefik.http.routers.message-service.rule=
         PathPrefix(`/messages`)
-        || Path(`/greeting`) && Host(`message`)
         || Path(`/v2/api-docs`) && Host(`message`)
         || Path(`/ul`)
         # usage example: POST /messages

@@ -41,7 +41,7 @@ public class EventInitializr {
                 "A party where we are going to play both monopoly and twister",
                 LocalDateTime.of(LocalDate.of(2022, 1, 1), LocalTime.of(12, 0)),
                 4,
-                "608873cd2e22d5088f7cdb5d",
+                "1",
                 LocalDateTime.now(),
                 new Address("Norweische Street 15", "Erfurt", "Germany"),
                 activities,

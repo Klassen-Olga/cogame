@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 
@@ -21,6 +22,7 @@ import java.time.LocalDate;
 @ControllerAdvice
 @RestController
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+
 
     /**
      * Will be called when one of the requested resources is not found
@@ -102,13 +104,29 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<Object> exception
-    (NotFoundException ex, WebRequest webRequest) {
+    (Exception ex, WebRequest webRequest) {
 
         ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(), ex.getMessage(),
                 webRequest.getDescription(false));
         return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+    /**
+     * will be thrown if an forbidden activity in performed on event
+     * e.g. user wants to delete event, but is not the creator
+     * @param ex         exception which is occurred
+     * @param webRequest gives access to request metadata
+     * @return 409 status code and details of the exception
+     */
+    @ExceptionHandler({EventConstraintViolation.class})
+    public final ResponseEntity<Object> unreachable
+    (EventConstraintViolation ex, WebRequest webRequest) {
 
+        ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDate.now(),
+                ex.getMessage(),
+                webRequest.getDescription(false));
+
+        return new ResponseEntity(exceptionResponse,  HttpStatus.CONFLICT);
+    }
     /**
      * Will be called, when the validation of an object in a POST or PUT methods fails
      *
