@@ -25,15 +25,15 @@ public class Message {
     @Id
     private String id;
 
-    @NotEmpty(message="User id can not be empty")
+    @NotEmpty(message = "User id can not be empty")
     @ApiModelProperty(notes = "Id of the user who posted the message. Should not be empty")
     private String userId;
 
-    @NotEmpty(message="User name can not be empty")
+    @NotEmpty(message = "User name can not be empty")
     @ApiModelProperty(notes = "Name of the user who posted the message. Should not be empty")
     private String userName;
 
-    @NotEmpty(message="Event id can not be empty")
+    @NotEmpty(message = "Event id can not be empty")
     @ApiModelProperty(notes = "Id of the event, to which the message is referring")
     private String eventId;
 

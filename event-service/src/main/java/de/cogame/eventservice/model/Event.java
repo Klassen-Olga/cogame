@@ -67,7 +67,6 @@ public class Event {
             @NotBlank(message = "Participant name should not be empty") String> participants;
 
 
-
     private List<Tool> tools;
 
 

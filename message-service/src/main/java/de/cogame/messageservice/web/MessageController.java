@@ -1,13 +1,13 @@
 package de.cogame.messageservice.web;
 
 import de.cogame.globalhandler.exception.EventConstraintViolation;
-import de.cogame.globalhandler.exception.NotFoundException;
+import de.cogame.globalhandler.exception.ServiceUnavailable;
 import de.cogame.messageservice.model.Message;
-import de.cogame.messageservice.repository.MessageRepository;
 import de.cogame.messageservice.service.MessageService;
-import de.cogame.messageservice.web.eventproxy.Event;
 import de.cogame.messageservice.web.eventproxy.EventServiceProxy;
 import de.cogame.messageservice.web.userproxy.UserServiceProxy;
+import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +38,6 @@ public class MessageController {
      */
     @GetMapping("/events/{id}/messages")
     public List<Message> getMessagesOfEvent(@PathVariable String id) {
-        // check if event exists
-        eventServiceProxy.existsEvent(id);
 
         return messageService.findByEventId(id);
     }
@@ -50,15 +48,21 @@ public class MessageController {
         return messageService.findAll();
     }
 
+    /**
+     * deletes all messages of an certain event
+     * will be used by message-service
+     */
     @DeleteMapping("/events/{id}/messages")
-    public void deleteEventsMessages(@PathVariable String id){
+    public void deleteEventsMessages(@PathVariable String id) {
         messageService.deleteByEventId(id);
     }
 
     /**
      * Saves an message into the database and returns 201 created status code
+     * calls event and user-service to check if the exist
      */
     @PostMapping("/messages")
+    @CircuitBreaker(name = "default", fallbackMethod = "createMessageFallback")
     public ResponseEntity<Object> createMessage(@Valid @RequestBody Message message) {
 
         // check if event exists
@@ -77,6 +81,13 @@ public class MessageController {
                 .toUri();
         return ResponseEntity.created(location).build();
 
+    }
+
+    public ResponseEntity<Object> createMessageFallback(Message message, FeignException ex) {
+        if (ex.status() == 404) {
+            throw ex;
+        }
+        throw new ServiceUnavailable("Service unreachable");
     }
 
 

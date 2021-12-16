@@ -16,13 +16,20 @@ public interface MessageServiceProxy {
     /**
      * Makes request to the message-service and
      * returns all messages of the event with the certain id
+     *
      * @param id event's id
      * @return list of messages
      */
     @GetMapping("/events/{id}/messages")
-     List<Message> getMessages(@PathVariable String id);
+    List<Message> getMessages(@PathVariable String id);
 
 
+    /**
+     * Makes request to the message-service when an event has to be deleted and
+     * deletes all messages of the event with the certain id
+     *
+     * @param id event's id
+     */
     @DeleteMapping("/events/{id}/messages")
     void deleteMessages(@PathVariable String id);
 }

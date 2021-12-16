@@ -19,7 +19,6 @@ import java.util.Map;
 public class EventInitializr {
 
     /**
-
      * @param id which should habe the event, empty String will autogenerate the id
      * @return an initialized event
      */

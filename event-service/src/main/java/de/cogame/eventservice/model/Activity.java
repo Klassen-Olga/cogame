@@ -17,7 +17,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @ApiModel(description = "Contains information about the activities of the event")
-public class Activity{
+public class Activity {
 
     public enum ActivityArt {
         COMPUTER,
@@ -26,12 +26,12 @@ public class Activity{
 
     }
 
-    @EnumValidation(enumClass = ActivityArt.class, message =AttributeDescription.activityArt)
-    @ApiModelProperty(notes =  AttributeDescription.activityArt)
+    @EnumValidation(enumClass = ActivityArt.class, message = AttributeDescription.activityArt)
+    @ApiModelProperty(notes = AttributeDescription.activityArt)
     private String activityArt;
 
-    @Size(min= AttributeDescription.activityNameSize, message = AttributeDescription.activityName)
-    @ApiModelProperty(notes =  AttributeDescription.activityName)
+    @Size(min = AttributeDescription.activityNameSize, message = AttributeDescription.activityName)
+    @ApiModelProperty(notes = AttributeDescription.activityName)
     private String name;
 }
 

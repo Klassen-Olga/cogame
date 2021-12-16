@@ -8,9 +8,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 /**
  * Inserts tree message seeds into database messagedb on the start of the server
- *
  */
 @AllArgsConstructor
 @Component

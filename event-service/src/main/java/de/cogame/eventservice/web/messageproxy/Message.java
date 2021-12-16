@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * Representation class of the Message class in the message-service module
+ * Representation  of the Message class in the message-service module
  * It will be instantiated on the event-service side after an http request to the message-service
  */
 @Data

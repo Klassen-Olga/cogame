@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Services for the event resource
+ */
 @Service
 @AllArgsConstructor
 public class EventService {
@@ -32,7 +34,7 @@ public class EventService {
         eventRepository.deleteById(id);
     }
 
-    public List<Event>  findAllByCreatorUserId(String id) {
+    public List<Event> findAllByCreatorUserId(String id) {
         return eventRepository.findAllByCreatorUserId(id);
     }
 }

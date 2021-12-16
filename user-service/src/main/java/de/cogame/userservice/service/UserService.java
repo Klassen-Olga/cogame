@@ -20,7 +20,7 @@ public class UserService {
         return userRepository.findAll();
     }
     public User getUser(String id) {
-        return userRepository.findById(id).orElseThrow(()-> {
+        return userRepository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("User with id " + id + " does not exist");
         });
 
